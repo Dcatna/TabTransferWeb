@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
+
+
 interface IFormInput {
     email: string;
     password: string;
@@ -15,6 +17,7 @@ const Signin = () => {
         async function checkUser(){
             const signedIn = await GetSignedInUser()
                 if (signedIn) {
+                    
                     navigator("/home")
                 }
         }
@@ -24,23 +27,26 @@ const Signin = () => {
         email: yup.string().email().required(),
         password: yup.string().min(6).max(15).required()
     })
+
     const [isJiggling, setIsJiggling] = useState(false);
     const handleButtonClick = () => {
         setIsJiggling(true);
         setTimeout(() => setIsJiggling(false), 500); // 500ms is the duration of the animation
-      };
-    const navigate = useNavigate();
-   
+      };   
+
     const{register,handleSubmit,formState: { errors }} = useForm<IFormInput>({
         resolver:yupResolver(schema),
       });
+
     function showAlertAfterAnimation(message : string) {
         setTimeout(() => {
             alert(message);
         }, 100);
     }
+    
 async function submitForm (formData : IFormInput) {
     try {
+        console.log(formData.email, formData.password)
         const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
           password: formData.password,
@@ -48,12 +54,15 @@ async function submitForm (formData : IFormInput) {
         
         if (error) {
           throw error;
+
         }
     
         if (data) {
           // Use the 'data.user' object as needed
+          console.log(data)
+          navigator("/home")
         }
-        navigate("/home")
+        navigator("/home")
       } catch (error) {
         handleButtonClick()
         if (error instanceof Error) {  // Type guard
@@ -68,7 +77,7 @@ async function submitForm (formData : IFormInput) {
         }
   return (
     <div className='main'>
-    <div className='main-container'>
+    <div className='main-container' style={{border:"1px"}}>
         <div className='content-container'>
             <h1>Sign In!</h1>
             <p>Please enter you user and password</p>

@@ -14,3 +14,8 @@ export async function GetSignedInUser() {
     }
     return false
 }
+
+export async function SignOut() {
+    const data = await supabase.auth.signOut()
+    return data
+}
