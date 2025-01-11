@@ -1,4 +1,5 @@
 import { createClient} from '@supabase/supabase-js'
+import { Tabs } from './Types';
 
 
 export const supabase = createClient(
@@ -20,18 +21,20 @@ export async function SignOut() {
     return data
 }
 
-export async function GetUserTabs(user_id : string | undefined) {
+export async function GetMostRecentUserTabs(user_id : string | undefined) : Promise<Tabs[] | undefined> {
     const {data: latestTabs, error : latestError} = await supabase.from("Tabs").select("*").eq("user_id", user_id).order("created_at", {ascending: false})
+    console.log(latestTabs)
     if (latestError) {
         throw latestError
     }
     if (latestTabs.length > 0 && latestTabs) {
         const most_recent = latestTabs[0].created_at
-        const {data, error} = await supabase.from("Tabs").select("url").eq("user_id", user_id).eq("created_at", most_recent)
+        const {data, error} = await supabase.from("Tabs").select("*").eq("user_id", user_id).eq("created_at", most_recent)
 
         if(error) {
             throw error
         }
-        return data 
+        return data as Tabs[] || undefined
     }
+    return undefined
 }

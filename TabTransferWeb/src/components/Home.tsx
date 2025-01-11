@@ -1,19 +1,21 @@
 
 
 import { useEffect, useState } from 'react'
-import { GetUserTabs, SignOut, supabase } from '../data/supabaseclient'
+import { GetMostRecentUserTabs, SignOut, supabase } from '../data/supabaseclient'
 import { useNavigate } from 'react-router-dom'
+import TabCard from './TabCard'
+import { Tabs } from '../data/Types'
 
 
 const Home = () => {
     const navigate = useNavigate()
-    const [recentTabs, setRecentTabs] = useState<{url : string}[]>([])
+    const [recentTabs, setRecentTabs] = useState<Tabs[]>([])
     
     useEffect(() => {
         async function GetRecentTab() {
             const user = await supabase.auth.getUser()
 
-            const tabs = await GetUserTabs(user.data.user?.id)
+            const tabs = await GetMostRecentUserTabs(user.data.user?.id)
             setRecentTabs(tabs || [])
         }
         GetRecentTab()
@@ -27,9 +29,12 @@ const Home = () => {
         SignOut()
     }
   return (
-    <div>
+    <div className=''>
         <button onClick={HandleClick}>Signout</button>
         Home
+        <div>
+            {<TabCard tabs={recentTabs}/>}
+        </div>
     </div>
   )
 }
