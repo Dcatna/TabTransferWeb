@@ -10,31 +10,49 @@ import { Tabs } from '../data/Types'
 const Home = () => {
     const navigate = useNavigate()
     const [recentTabs, setRecentTabs] = useState<Tabs[]>([])
-    const [monthsTabs, setMonthsTabs] = useState<Record<string, Tabs[]>>({})
+    const [groupedTabs, setGroupedTabs] = useState<Tabs[][] | undefined>([]);
 
+    const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
+    
+    const toggleCard = (index: number) => {
+      console.log("Toggling card at index:", index);
+        setExpandedCardIndex((prevIndex) => (prevIndex === index ? null : index));
+    }
 
-    useEffect(() => {
-        async function GetRecentTab() {
-            const user = await supabase.auth.getUser()
+  useEffect(() => {
+    async function GetRecentTab() {
+      const user = await supabase.auth.getUser();
 
-            const tabs = await GetMostRecentUserTabs(user.data.user?.id)
-            const monthsTabs = await GetUserTabsWithinMonth(user.data.user?.id)
-            const grouped = monthsTabs?.reduce((acc: Record<string, Tabs[]>, tab: Tabs) => {
-                const date = new Date(tab.created_at).toISOString().split('T')[0]; // Extract the date (YYYY-MM-DD)
-                if (!acc[date]) {
-                  acc[date] = [];
-                }
-                acc[date].push(tab);
-                return acc;
-              }, {});
-            console.log(grouped)
-            console.log(monthsTabs, "MOTHS")
-            setRecentTabs(tabs || [])
+      // Fetch tabs
+      const tabs = await GetMostRecentUserTabs(user.data.user?.id);
+      const monthsTabs = await GetUserTabsWithinMonth(user.data.user?.id);
+
+      console.log(monthsTabs, 'MONTHS');
+
+      // Group tabs into arrays for each day
+      const grouped = monthsTabs?.reduce<Tabs[][]>((acc, tab) => {
+        const date = new Date(tab.created_at).toISOString().split('T')[0]; // Extract the date (YYYY-MM-DD)
+
+        // Find the existing group for this date
+        const lastGroup = acc[acc.length - 1];
+        if (!lastGroup || new Date(lastGroup[0].created_at).toISOString().split('T')[0] !== date) {
+          // If no group exists for this date, create a new one
+          acc.push([tab]);
+        } else {
+          // Add the tab to the last group
+          lastGroup.push(tab);
         }
-        GetRecentTab()
-        
-        
-    }, [])
+
+        return acc;
+      }, []);
+
+      console.log(grouped, 'Grouped Tabs');
+      setRecentTabs(tabs || []);
+      setGroupedTabs(grouped?.reverse());
+    }
+
+    GetRecentTab();
+  }, []);
 
     console.log(recentTabs)
     function HandleClick() {
@@ -42,13 +60,21 @@ const Home = () => {
         SignOut()
     }
   return (
-    <div className=''>
-        <button onClick={HandleClick}>Signout</button>
-        Home
-        <div>
-            {<TabCard tabs={recentTabs}/>}
-        </div>
+    <div className="">
+      <button onClick={HandleClick}>Signout</button>
+      Home
+      <div className="grid grid-cols-6 gap-4 p-4 items-start">
+        {groupedTabs?.map((group, index) => (
+          <TabCard
+            tabs={group}
+            key={index}
+            isExpanded={expandedCardIndex === index}
+            toggleDropdown={() => toggleCard(index)}
+          />
+        ))}
+      </div>
     </div>
+
   )
 }
 
