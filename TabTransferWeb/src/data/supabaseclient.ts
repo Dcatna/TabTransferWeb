@@ -38,3 +38,16 @@ export async function GetMostRecentUserTabs(user_id : string | undefined) : Prom
     }
     return undefined
 }
+
+export async function GetUserTabsWithinMonth(user_id : string | undefined) :  Promise<Tabs[] | undefined> {
+    const oneMonthTime = new Date()
+    oneMonthTime.setMonth(oneMonthTime.getMonth() - 1)
+    const {data, error } = await supabase.from("Tabs").select("*").eq("user_id", user_id).gte("created_at", oneMonthTime.toISOString())
+
+    if (error) {
+        throw error
+    }
+
+    return data as Tabs[] || undefined
+
+}
