@@ -1,15 +1,20 @@
 
 import { Outlet } from 'react-router-dom'
-import Navbar from './components/Navbar'
+import AppSidebar from './components/Sidebar'
+import { SidebarProvider } from './components/ui/sidebar'
 
 function App() {
 
 
   return (
-    <div >
-      <Navbar/>
+    <SidebarProvider className="max-h-screen overflow-hidden">
+      <AppSidebar variant="inset" collapsible="icon" />
+
+
       <Outlet />
-    </div>
+    
+
+    </SidebarProvider>
   )
 }
 
