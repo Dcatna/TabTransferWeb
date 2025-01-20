@@ -55,8 +55,8 @@ const CreateTabList = () => {
     e.preventDefault();
     try {
       const { data, error } = await supabase
-        .from("GroupedTabs")
-        .insert([{ group_name: listName, "description": description }]);
+        .from("Groups")
+        .insert({ group_name: listName, description: description, user_id: (await supabase.auth.getUser()).data.user?.id });
 
       if (error) {
         console.error("Error inserting tab list:", error.message);
