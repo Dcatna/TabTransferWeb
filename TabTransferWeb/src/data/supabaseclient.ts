@@ -1,5 +1,5 @@
-import { createClient} from '@supabase/supabase-js'
-import { Tabs } from './Types';
+import { createClient, Session, User} from '@supabase/supabase-js'
+import { StoredUser, Tabs } from './Types';
 
 
 export const supabase = createClient(
@@ -51,3 +51,29 @@ export async function GetUserTabsWithinMonth(user_id : string | undefined) :  Pr
     return data as Tabs[] || undefined
 
 }
+
+export async function getUserById(id: string): Promise<StoredUser | null> {
+    try {
+        const res = await supabase.from("users")
+            .select()
+            .filter("user_id", "eq", id)
+            .limit(1)
+            .order("user_id", { ascending: true })
+
+        return res.data![0]
+    } catch{}
+    return null
+}
+
+export async function signInWithEmailAndPassword(email: string, password: string): Promise<{user: User, session: Session} | null> {
+    try {
+        const result = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+         })
+         if (result.data.user && result.data.session) {
+            return result.data
+         }
+     } catch {}
+     return null
+ }
