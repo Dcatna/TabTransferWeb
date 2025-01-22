@@ -1,5 +1,5 @@
 import { createClient, Session, User} from '@supabase/supabase-js'
-import { StoredUser, Tabs } from './Types';
+import { Group, StoredUser, Tabs } from './Types';
 
 
 export const supabase = createClient(
@@ -52,9 +52,18 @@ export async function GetUserTabsWithinMonth(user_id : string | undefined) :  Pr
 
 }
 
+export async function GetUserGroups(user_id : string) : Promise<Group[] | undefined> {
+    const {data, error} = await supabase.from("Groups").select("*").eq("user_id", user_id)
+    if (error) {
+        throw error
+    }
+    console.log(data, "GOUPS")
+    return data as Group[] || undefined
+}
+
 export async function getUserById(id: string): Promise<StoredUser | null> {
     try {
-        const res = await supabase.from("users")
+        const res = await supabase.from("Users")
             .select()
             .filter("user_id", "eq", id)
             .limit(1)

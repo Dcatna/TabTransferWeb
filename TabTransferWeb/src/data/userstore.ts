@@ -1,5 +1,5 @@
 import { failureResult, Result, successResult } from "@/lib/utils";
-import { getUserById, signInWithEmailAndPassword, supabase } from "./supabaseclient";
+import { getUserById, GetUserGroups, signInWithEmailAndPassword, supabase } from "./supabaseclient";
 import { Group, StoredUser, UserData } from "./Types";
 import {create } from "zustand"
 import { User } from "@supabase/supabase-js";
@@ -117,7 +117,15 @@ export interface UserStore {
     },
   
     refreshUserLists: async () => {
-      // Add logic to refresh user lists
+      const user_id = get().userData?.user.id
+      if(!user_id) {
+        set({lists: []})
+
+      } else {
+        const result = await GetUserGroups(user_id)
+        console.log(result)
+        set({lists:result})
+      }
     },
   
     signOut: async () => {
@@ -134,7 +142,7 @@ export interface UserStore {
   
     createList: async (name: string, description: string, pub: boolean) => {
       const { data, error } = await supabase
-        .from("GroupedTabs")
+        .from("Groups")
         .insert([{ group_name: name, description, public: pub }]);
       if (error) {
         console.error("Error creating list:", error.message);
@@ -145,7 +153,7 @@ export interface UserStore {
     },
   
     deleteList: async (listId: string) => {
-      const { error } = await supabase.from("GroupedTabs").delete().eq("id", listId);
+      const { error } = await supabase.from("Groups").delete().eq("id", listId);
       if (error) {
         console.error("Error deleting list:", error.message);
         return;

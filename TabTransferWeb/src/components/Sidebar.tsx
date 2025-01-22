@@ -15,9 +15,13 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { supabase } from "@/data/supabaseclient";
+import { useUserStore } from "@/data/userstore";
 import { useState } from "react";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const lists = useUserStore((state) => state.lists) || []
+  console.log(lists)
+
   return (
     <Sidebar
       {...props}
