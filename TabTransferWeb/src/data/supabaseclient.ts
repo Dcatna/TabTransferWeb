@@ -63,16 +63,28 @@ export async function GetUserGroups(user_id : string) : Promise<Group[] | undefi
 
 export async function getUserById(id: string): Promise<StoredUser | null> {
     try {
-        const res = await supabase.from("Users")
-            .select()
-            .filter("user_id", "eq", id)
-            .limit(1)
-            .order("user_id", { ascending: true })
+        console.log(id)
+      const { data, error } = await supabase.auth.getUser(id)
+  
+      if (error) {
+        console.error("Error fetching user by ID:", error.message);
+        return null;
+      }
+     
+      console.log("Fetched user from auth.users:", data);
+      return {
+        user_id: data.user.id,
+        email: data.user.email!,
+        username: data.user.email!.split("@")[0],
+        profile_image: "",
+      } satisfies StoredUser
 
-        return res.data![0]
-    } catch{}
-    return null
-}
+    } catch (err) {
+      console.error("Error querying auth.users table:", err);
+      return null;
+    }
+  }
+  
 
 export async function signInWithEmailAndPassword(email: string, password: string): Promise<{user: User, session: Session} | null> {
     try {
@@ -83,6 +95,8 @@ export async function signInWithEmailAndPassword(email: string, password: string
          if (result.data.user && result.data.session) {
             return result.data
          }
-     } catch {}
+     } catch {
+        return null
+     }
      return null
  }

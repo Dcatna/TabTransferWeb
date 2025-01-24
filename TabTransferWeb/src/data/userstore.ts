@@ -1,8 +1,8 @@
 import { failureResult, Result, successResult } from "@/lib/utils";
 import { getUserById, GetUserGroups, signInWithEmailAndPassword, supabase } from "./supabaseclient";
-import { Group, StoredUser, UserData } from "./Types";
+import { Group, UserData } from "./Types";
 import {create } from "zustand"
-import { User } from "@supabase/supabase-js";
+
 
 export interface UserStore {
     userData: UserData | undefined;
@@ -65,8 +65,8 @@ export interface UserStore {
               get().refreshUserLists();
             });
         } else if (event === "SIGNED_OUT") {
-          localStorage.removeItem("prev_user")
-          localStorage.removeItem("stored_user")
+          localStorage.removeItem("user")
+          localStorage.removeItem("stored")
           set({
             userData: undefined,
             lists: [],
@@ -82,12 +82,12 @@ export interface UserStore {
       })
       initializeUser().then((result) => {
         if (!result.ok) {
-          localStorage.removeItem("prev_user")
-          localStorage.removeItem("stored_user")
+          localStorage.removeItem("user")
+          localStorage.removeItem("stored")
           return
         }
-        localStorage.setItem("prev_user", JSON.stringify(result.data.user))
-        localStorage.setItem("stored_user", JSON.stringify(result.data.stored))
+        localStorage.setItem("user", JSON.stringify(result.data.user))
+        localStorage.setItem("stored", JSON.stringify(result.data.stored))
         set({
           userData: result.data,
         });
@@ -106,29 +106,34 @@ export interface UserStore {
   
     refreshUser: async () => {
       const { data, error } = await supabase.auth.getUser();
-    if (error) {
-      return;
-    }
-    const id = data.user?.id;
-    if (!id) {
-      return;
-    }
-    const stored = await getUserById(id);
-    if (!stored) {
-      return;
-    }
-    localStorage.setItem("prev_user", JSON.stringify(data.user))
-    localStorage.setItem("stored_user", JSON.stringify(stored))
-    set({
-      userData: {
-        user: data.user,
-        stored: stored,
-      },
-    });
+      if (error) {
+        console.error("Error fetching user:", error.message);
+        return;
+      }
+      const id = data.user?.id;
+      if (!id) {
+        console.warn("No user ID found");
+        return;
+      }
+      const stored = await getUserById(id);
+      if (!stored) {
+        console.warn("User ID not found in database");
+        return;
+      }
+      // Overwrite localStorage with the latest data
+      localStorage.setItem("user", JSON.stringify({ user: data.user }));
+      localStorage.setItem("stored", JSON.stringify(stored));
+      set({
+        userData: {
+          user: data.user,
+          stored: stored,
+        },
+      });
     },
   
     refreshUserLists: async () => {
       const user_id = get().userData?.user.id
+      console.log(user_id, "USER");
       if(!user_id) {
         set({lists: []})
 
@@ -177,19 +182,24 @@ export interface UserStore {
 
   async function initializeUser(): Promise<Result<UserData, any>> {
     const user = await supabase.auth.getUser();
-  
+    console.log(user, "INITAL USER")
     if (user.error) {
       return failureResult(user.error);
     }
   
-    const stored = await getUserById(user.data.user.id);
-  
-    if (!stored) {
-      return failureResult(stored);
-    }
+    // const stored = await getUserById(user.data.user.id);
+    // console.log(stored, "INITAL STORED")
+    // if (!stored) {
+    //   return failureResult(stored);
+    // }
   
     return successResult({
       user: user.data.user,
-      stored: stored,
+      stored: {
+        email: user.data.user.email || "", // Default to an empty string if email is undefined
+        profile_image: "",
+        user_id: user.data.user.id, // Ensure this exists
+        username: user.data.user.email?.split("@")[0] || "unknown", // Handle undefined email gracefully
+      },
     });
   }

@@ -23,7 +23,7 @@ const toggleCard = (index: number) => {
   useEffect(() => {
     async function GetRecentTab() {
       const user = await supabase.auth.getUser();
-
+      console.log(user, "HELo")
       const tabs = await GetMostRecentUserTabs(user.data.user?.id);
       const monthsTabs = await GetUserTabsWithinMonth(user.data.user?.id);
 
