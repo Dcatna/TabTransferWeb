@@ -23,24 +23,35 @@ export interface UserStore {
 
   function getInitialUserData() {
     try {
-      const prevUser = localStorage.getItem("prev_user") as User | null
-      const prevData = localStorage.getItem("stored_user") as StoredUser | null
-      console.log(prevUser, prevData)
-      if (prevUser && prevData && prevUser.id === prevData.user_id) {
+      // Fetch the stored data from localStorage
+      const userString = localStorage.getItem("user");
+      const storedString = localStorage.getItem("stored");
+  
+      // Parse the JSON strings into objects
+      const user = userString ? JSON.parse(userString) : null;
+      const stored = storedString ? JSON.parse(storedString) : null;
+  
+      console.log("Parsed localStorage data:", user, stored);
+  
+      // Validate the data and return UserData if valid
+      if (user && stored && user.user.id === stored.user_id) {
         return {
-          user: prevUser,
-          stored: prevData
-        } satisfies UserData
+          user: user.user, // Access the nested user object
+          stored: stored,
+        };
       }
-    } catch {
-      return undefined
+    } catch (error) {
+      console.error("Error parsing localStorage data:", error);
     }
+    return undefined;
   }
 
   export const useUserStore = create<UserStore>((set, get) => ({
     userData: getInitialUserData(),
     lists: [],
     init: () => {
+      console.log("Initializing user store...");
+
       const { data } = supabase.auth.onAuthStateChange((event, session) => {
         console.log(event, session)
 

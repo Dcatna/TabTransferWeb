@@ -19,8 +19,9 @@ import { useUserStore } from "@/data/userstore";
 import { useState } from "react";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const user = useUserStore((state) => state.userData?.user)
   const lists = useUserStore((state) => state.lists) || []
-  console.log(lists)
+  console.log(lists, user)
 
   return (
     <Sidebar
