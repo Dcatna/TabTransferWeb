@@ -180,7 +180,7 @@ export interface UserStore {
     
   }))
 
-  async function initializeUser(): Promise<Result<UserData, any>> {
+  async function initializeUser(): Promise<Result<UserData, unknown>> {
     const user = await supabase.auth.getUser();
     console.log(user, "INITAL USER")
     if (user.error) {

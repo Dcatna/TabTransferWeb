@@ -17,12 +17,13 @@ import {
 import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const user = useUserStore((state) => state.userData?.user)
   const lists = useUserStore((state) => state.lists) || []
   console.log(lists, user)
-
+  const navigator = useNavigate()
   return (
     <Sidebar
       {...props}
@@ -34,17 +35,14 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         <CreateTabList />
       </SidebarHeader>
 
-      {/* Sidebar Content */}
       <SidebarContent className="p-4 space-y-4">
-        <SidebarGroup className="p-3 bg-white rounded-lg shadow-md">
-          <p className="text-gray-700 font-medium">Group 1</p>
-        </SidebarGroup>
-        <SidebarGroup className="p-3 bg-white rounded-lg shadow-md">
-          <p className="text-gray-700 font-medium">Group 2</p>
-        </SidebarGroup>
+        {lists.map((list, index) => (
+          
+          <SidebarGroup className="p-3 bg-white rounded-lg shadow-md" key={index} onClick={() => navigator(`group/${list.id}`)}>{list.group_name}</SidebarGroup>
+        ))}
       </SidebarContent>
+      
 
-      {/* Sidebar Footer */}
       <SidebarFooter className="p-4 bg-gray-200 text-sm text-gray-600 text-center">
         Footer Content
       </SidebarFooter>
