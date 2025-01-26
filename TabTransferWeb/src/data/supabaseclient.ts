@@ -110,3 +110,17 @@ export async function GetListItemsByName(group_name : string, user_id: string) :
     return data as GroupResponse[] || undefined
 
 }
+
+export async function InsertGroupItemByName(group_name : string, user_id: string, url: string, favicon_url: string | undefined, title : string) {
+    const res = await supabase.from("GroupItems").insert(
+        {group_name: group_name, 
+            user_id: user_id, 
+            url: url, 
+            favicon_url: favicon_url,
+            title: title})
+            
+    if (res.error) {
+        return false
+    }
+    return true
+}
