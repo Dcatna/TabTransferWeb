@@ -1,4 +1,4 @@
-import { GetListItemsByName, InsertGroupItemByName } from "@/data/supabaseclient";
+import { DeleteGroupItemByName, GetListItemsByName, InsertGroupItemByName } from "@/data/supabaseclient";
 import { GroupResponse } from "@/data/Types";
 import { useUserStore } from "@/data/userstore";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
@@ -8,20 +8,32 @@ import { DialogHeader } from "./ui/dialog";
 import type { Group } from "@/data/Types";
 const Group = () => {
   const location = useLocation();
-  const list = location.state as Group
-  const user = useUserStore((state) => state.userData?.user)
+  const list = location.state as Group;
+  const user = useUserStore((state) => state.userData?.user);
 
-  const [listData, setListData] = useState<GroupResponse[] | undefined>([])
+  const [listData, setListData] = useState<GroupResponse[] | undefined>([]);
 
   useEffect(() => {
     async function getListData() {
-      const data = await GetListItemsByName(list.group_name, user!.id)
-      setListData(data)
+      const data = await GetListItemsByName(list.group_name, user!.id);
+      setListData(data);
     }
-    getListData()
-  }, [list])
+    getListData();
+  }, [list, user]);
 
-  console.log(list);
+  const refreshListData = async () => {
+    const data = await GetListItemsByName(list.group_name, user!.id);
+    setListData(data);
+  };
+  
+  async function RemoveFromList(url: string){
+    const res = await DeleteGroupItemByName(list.group_name, user!.id, url )
+    if (!res) {
+      alert("Failed to create tab list. Please try again.");
+      return;
+    }
+    await refreshListData();
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -29,6 +41,9 @@ const Group = () => {
       <div className="bg-white p-4 shadow-md rounded-lg">
         <h1 className="text-2xl font-bold">{list.group_name}</h1>
         <p className="text-gray-600 mt-2">{list.description}</p>
+        <div className="mt-6">
+        <AddTabDialog group_name={list.group_name} refreshList={refreshListData} />
+      </div>
       </div>
 
       {/* Tabs Section */}
@@ -36,13 +51,13 @@ const Group = () => {
         <h2 className="text-xl font-semibold mb-4">Tabs</h2>
         {listData && listData.length > 0 ? (
           <ul className="space-y-4">
-            {listData?.map((tab, index) => (
+            {listData.map((tab, index) => (
               <li
                 key={index}
                 className="bg-white p-4 shadow-md rounded-lg flex justify-between items-center"
               >
                 <span>{tab.title}</span>
-                <button className="text-red-500 hover:underline">
+                <button className="text-red-500 hover:underline" onClick= {()=> RemoveFromList(tab.url)}>
                   Remove Tab
                 </button>
               </li>
@@ -52,19 +67,17 @@ const Group = () => {
           <p className="text-gray-500">No tabs yet. Start by adding one!</p>
         )}
       </div>
-
-      {/* Add New Tab Button */}
-      <div className="mt-6">
-        <AddTabDialog group_name={list.group_name}/>
-
-      </div>
+      
     </div>
-  )
-}
+  );
+};
+
 interface AddTabDialogProp {
   group_name: string;
+  refreshList: () => Promise<void>;
 }
-const AddTabDialog = ({group_name} : AddTabDialogProp) => {
+
+const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [faviconUrl, setFaviconUrl] = useState("");
@@ -73,8 +86,8 @@ const AddTabDialog = ({group_name} : AddTabDialogProp) => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await InsertGroupItemByName(user_id!, url, title, faviconUrl, group_name)
-      if (res == false) {
+      const res = await InsertGroupItemByName(group_name, user_id!, url, title, faviconUrl);
+      if (!res) {
         alert("Failed to create tab list. Please try again.");
         return;
       }
@@ -85,6 +98,8 @@ const AddTabDialog = ({group_name} : AddTabDialogProp) => {
       setTitle("");
       setFaviconUrl("");
 
+      // Call the refresh function to reload the list
+      await refreshList();
     } catch (err) {
       console.error("Unexpected error:", err);
       alert("An unexpected error occurred. Please try again.");
@@ -164,6 +179,7 @@ const AddTabDialog = ({group_name} : AddTabDialogProp) => {
         </form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
+
 export default Group

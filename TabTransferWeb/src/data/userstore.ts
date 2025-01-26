@@ -196,10 +196,10 @@ export interface UserStore {
     return successResult({
       user: user.data.user,
       stored: {
-        email: user.data.user.email || "", // Default to an empty string if email is undefined
+        email: user.data.user.email || "", 
         profile_image: "",
-        user_id: user.data.user.id, // Ensure this exists
-        username: user.data.user.email?.split("@")[0] || "unknown", // Handle undefined email gracefully
+        user_id: user.data.user.id, 
+        username: user.data.user.email?.split("@")[0] || "unknown",
       },
     });
   }

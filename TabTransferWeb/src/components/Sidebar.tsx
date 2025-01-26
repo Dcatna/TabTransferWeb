@@ -20,9 +20,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
-  const user = useUserStore((state) => state.userData?.user)
+  //const user = useUserStore((state) => state.userData?.user)
   const lists = useUserStore((state) => state.lists) || []
-  console.log(lists, user)
   return (
     <Sidebar
       {...props}

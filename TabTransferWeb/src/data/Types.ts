@@ -39,4 +39,5 @@ export type GroupResponse = {
     group_picture : string | null;
     favicon_url : string; 
     title : string;
+    url: string;
 }

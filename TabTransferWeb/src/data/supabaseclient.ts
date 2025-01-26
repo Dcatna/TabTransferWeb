@@ -23,7 +23,6 @@ export async function SignOut() {
 
 export async function GetMostRecentUserTabs(user_id : string | undefined) : Promise<Tabs[] | undefined> {
     const {data: latestTabs, error : latestError} = await supabase.from("Tabs").select("*").eq("user_id", user_id).order("created_at", {ascending: false})
-    console.log(latestTabs)
     if (latestError) {
         throw latestError
     }
@@ -57,13 +56,11 @@ export async function GetUserGroups(user_id : string) : Promise<Group[] | undefi
     if (error) {
         throw error
     }
-    console.log(data, "GOUPS")
     return data as Group[] || undefined
 }
 
 export async function getUserById(id: string): Promise<StoredUser | null> {
     try {
-        console.log(id)
       const { data, error } = await supabase.auth.getUser(id)
   
       if (error) {
@@ -111,14 +108,22 @@ export async function GetListItemsByName(group_name : string, user_id: string) :
 
 }
 
-export async function InsertGroupItemByName(group_name : string, user_id: string, url: string, favicon_url: string | undefined, title : string) {
+export async function InsertGroupItemByName(group_name : string, user_id: string, url: string, title : string, favicon_url: string | undefined) {
     const res = await supabase.from("GroupItems").insert(
         {group_name: group_name, 
             user_id: user_id, 
             url: url, 
             favicon_url: favicon_url,
             title: title})
-            
+
+    if (res.error) {
+        return false
+    }
+    return true
+}
+
+export async function DeleteGroupItemByName(group_name: string, user_id: string, url: string) {
+    const res = await supabase.from("GroupItems").delete().eq("group_name", group_name).eq("user_id", user_id).eq("url", url)
     if (res.error) {
         return false
     }
