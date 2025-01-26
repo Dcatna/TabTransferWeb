@@ -1,5 +1,5 @@
 import { createClient, Session, User} from '@supabase/supabase-js'
-import { Group, StoredUser, Tabs } from './Types';
+import { Group, GroupResponse, StoredUser, Tabs } from './Types';
 
 
 export const supabase = createClient(
@@ -100,3 +100,13 @@ export async function signInWithEmailAndPassword(email: string, password: string
      }
      return null
  }
+
+export async function GetListItemsByName(group_name : string, user_id: string) : Promise<GroupResponse[] | undefined> {
+    
+    const { data, error } = await supabase.from("GroupItems").select("*").eq("group_name", group_name).eq("user_id", user_id)
+    if (error) {
+        throw error
+    }
+    return data as GroupResponse[] || undefined
+
+}

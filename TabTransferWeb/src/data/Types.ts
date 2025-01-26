@@ -30,3 +30,12 @@ export type Group = {
     group_picture: string | undefined;
     description: string| undefined;
 }
+
+export type GroupResponse = {
+    id : number;
+    group_name : string;
+    user_id : string;
+    created_at : string;
+    group_picture : string | null;
+    favicon_url : string; 
+}
