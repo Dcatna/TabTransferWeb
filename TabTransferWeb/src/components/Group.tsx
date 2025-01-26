@@ -25,7 +25,7 @@ const Group = () => {
     const data = await GetListItemsByName(list.group_name, user!.id);
     setListData(data);
   };
-  
+
   async function RemoveFromList(url: string){
     const res = await DeleteGroupItemByName(list.group_name, user!.id, url )
     if (!res) {
@@ -56,6 +56,7 @@ const Group = () => {
                 key={index}
                 className="bg-white p-4 shadow-md rounded-lg flex justify-between items-center"
               >
+                <img src={tab.favicon_url} alt="" />
                 <span>{tab.title}</span>
                 <button className="text-red-500 hover:underline" onClick= {()=> RemoveFromList(tab.url)}>
                   Remove Tab
@@ -77,6 +78,42 @@ interface AddTabDialogProp {
   refreshList: () => Promise<void>;
 }
 
+const getFaviconUrl = async (websiteUrl: string): Promise<string> => {
+  try {
+    // Ensure the URL has a protocol
+    if (websiteUrl.includes("github.com")) {
+      return "https://github.githubassets.com/favicons/favicon.svg";
+    }
+    
+    const normalizedUrl = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`;
+
+    // Fetch the HTML content of the website
+    const response = await fetch(normalizedUrl);
+    const html = await response.text();
+
+    // Parse the HTML to extract the favicon link
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const iconLink = doc.querySelector("link[rel~='icon']") as HTMLLinkElement;
+
+    // Resolve favicon URL
+    if (iconLink) {
+      // Handle relative paths for the favicon
+      return new URL(iconLink.getAttribute("href") || "", normalizedUrl).href;
+    }
+
+    // Fallback to /favicon.ico if no icon link is found
+    return `${normalizedUrl}/favicon.ico`;
+  } catch (error) {
+    console.error("Failed to fetch favicon:", error);
+
+    // Fallback to /favicon.ico if fetching fails
+    return `${websiteUrl}/favicon.ico`;
+  }
+};
+
+
+
 const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
@@ -86,6 +123,7 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const faviconUrl = await getFaviconUrl(url);
       const res = await InsertGroupItemByName(group_name, user_id!, url, title, faviconUrl);
       if (!res) {
         alert("Failed to create tab list. Please try again.");
@@ -134,13 +172,13 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
-              placeholder="Enter a name for your tab list"
+              placeholder="Enter the url for the tab"
               required
             />
           </div>
           <div>
             <label
-              htmlFor="description"
+              htmlFor="title"
               className="block text-sm font-medium text-gray-700"
             >
               Tab Title
@@ -150,24 +188,10 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
-              placeholder="Enter a brief description of the tab list"
+              placeholder="Enter a title for the tab"
             />
           </div>
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Tab Picture
-            </label>
-            <input
-              id="favicon"
-              value={faviconUrl}
-              onChange={(e) => setFaviconUrl(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
-              placeholder="Enter a brief description of the tab list"
-            />
-          </div>
+          
           <div className="flex justify-end">
             <button
               type="submit"
