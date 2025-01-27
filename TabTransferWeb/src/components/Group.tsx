@@ -35,46 +35,77 @@ const Group = () => {
     await refreshListData();
   }
 
+  const handleRestore = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    listData?.forEach((tab) => {
+      window.open(tab.url, "_blank");
+  })
+  }
   return (
-    <div className="min-h-screen bg-gray-100 p-4 w-full">
-     <button
-        onClick={() => navigate(-1)}          
-        className="text-blue-600 font-bold"      >          
-        ← Back 
-    </button>
-      {/* Header Section */}
-      <div className="bg-white p-4 shadow-md rounded-lg">
-        <h1 className="text-2xl font-bold">{list.group_name}</h1>
-        <p className="text-gray-600 mt-2">{list.description}</p>
-        <div className="mt-6">
-        <AddTabDialog group_name={list.group_name} refreshList={refreshListData} />
-      </div>
-      </div>
+<div className="min-h-screen bg-gray-100 p-4 w-full">
+  <button
+    onClick={() => navigate(-1)}          
+    className="text-blue-600 font-bold"      
+  >          
+    ← Back 
+  </button>
 
-      {/* Tabs Section */}
-      <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-4">Tabs</h2>
-        {listData && listData.length > 0 ? (
-          <ul className="space-y-4">
-            {listData.map((tab, index) => (
-              <li
-                key={index}
-                className="bg-white p-4 shadow-md rounded-lg flex justify-between items-center"
-              >
-                <img src={tab.favicon_url} alt="" />
-                <span>{tab.title}</span>
-                <button className="text-red-500 hover:underline" onClick= {()=> RemoveFromList(tab.url)}>
-                  Remove Tab
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-500">No tabs yet. Start by adding one!</p>
-        )}
-      </div>
-      
+  {/* Header Section */}
+  <div className="bg-white p-4 shadow-md rounded-lg relative">
+    <h1 className="text-2xl font-bold">{list.group_name}</h1>
+    <p className="text-gray-600 mt-2">{list.description}</p>
+
+    {/* Restore Button */}
+    <button
+      onClick={handleRestore}
+      className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
+    >
+      Restore
+    </button>
+
+    <div className="mt-6">
+      <AddTabDialog group_name={list.group_name} refreshList={refreshListData} />
     </div>
+  </div>
+
+  {/* Tabs Section */}
+  <div className="mt-6">
+    <h2 className="text-xl font-semibold mb-4">Tabs</h2>
+    {listData && listData.length > 0 ? (
+      <ul className="space-y-4">
+      {listData.map((tab, index) => (
+        <li
+          key={index}
+          className="bg-white p-4 shadow-md rounded-lg flex items-center space-x-4"
+        >
+          {/* Favicon */}
+          <img src={tab.favicon_url} alt="" className="w-10 h-10 flex-shrink-0" />
+          
+          {/* Title */}
+          <span className="flex-1 truncate">{tab.title}</span>
+          
+          {/* URL */}
+          <a href={tab.url}
+            target="_blank"
+            rel="noopener noreferrer" 
+            className="flex-1 truncate text-gray-500">{tab.url} </a>
+          
+          {/* Remove Button */}
+          <button
+            className="text-red-500 hover:underline flex-shrink-0"
+            onClick={() => RemoveFromList(tab.url)}
+          >
+            Remove Tab
+          </button>
+        </li>
+      ))}
+    </ul>
+    ) : (
+      <p className="text-gray-500">No tabs yet. Start by adding one!</p>
+    )}
+  </div>
+</div>
+
   );
 };
 
@@ -86,60 +117,50 @@ interface AddTabDialogProp {
 const getFaviconUrl = async (websiteUrl: string): Promise<string> => {
   try {
     // Ensure the URL has a protocol
-    if (websiteUrl.includes("github.com")) {
-      return "https://github.githubassets.com/favicons/favicon.svg";
-    }
-    
     const normalizedUrl = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`;
 
-    // Fetch the HTML content of the website
-    const response = await fetch(normalizedUrl);
-    const html = await response.text();
+    // Use Google Favicon API to get the favicon
+    const googleFaviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(normalizedUrl).hostname}&sz=64`;
+    return googleFaviconUrl;
 
-    // Parse the HTML to extract the favicon link
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    const iconLink = doc.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    // Optional: Use other services as fallback or based on conditions
+    // const duckDuckGoFaviconUrl = `https://icons.duckduckgo.com/ip3/${new URL(normalizedUrl).hostname}.ico`;
+    // const iconHorseFaviconUrl = `https://icon.horse/icon/${new URL(normalizedUrl).hostname}`;
 
-    // Resolve favicon URL
-    if (iconLink) {
-      // Handle relative paths for the favicon
-      return new URL(iconLink.getAttribute("href") || "", normalizedUrl).href;
-    }
-
-    // Fallback to /favicon.ico if no icon link is found
-    return `${normalizedUrl}/favicon.ico`;
+    // If a fallback is needed:
+    // return duckDuckGoFaviconUrl or iconHorseFaviconUrl
   } catch (error) {
     console.error("Failed to fetch favicon:", error);
 
-    // Fallback to /favicon.ico if fetching fails
+    // Fallback to /favicon.ico
     return `${websiteUrl}/favicon.ico`;
   }
 };
 
 
 
+
 const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
-  const [faviconUrl, setFaviconUrl] = useState("");
+  const [open, setOpen] = useState(false); // Control dialog open state
+
+  let faviconUrl = ""
   const user_id = useUserStore((state) => state.userData?.user.id);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const faviconUrl = await getFaviconUrl(url);
+      faviconUrl = await getFaviconUrl(url);
       const res = await InsertGroupItemByName(group_name, user_id!, url, title, faviconUrl);
       if (!res) {
         alert("Failed to create tab list. Please try again.");
         return;
       }
 
-      alert("Tab list created successfully!");
-
       setUrl("");
       setTitle("");
-      setFaviconUrl("");
+      setOpen(false);
 
       // Call the refresh function to reload the list
       await refreshList();
@@ -150,9 +171,9 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md">
-        Create Tab List
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
+        Create Tab
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
         <DialogHeader>
