@@ -3,14 +3,14 @@ import { GroupResponse } from "@/data/Types";
 import { useUserStore } from "@/data/userstore";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DialogHeader } from "./ui/dialog";
 import type { Group } from "@/data/Types";
 const Group = () => {
   const location = useLocation();
   const list = location.state as Group;
   const user = useUserStore((state) => state.userData?.user);
-
+  const navigate = useNavigate()
   const [listData, setListData] = useState<GroupResponse[] | undefined>([]);
 
   useEffect(() => {
@@ -36,7 +36,12 @@ const Group = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gray-100 p-4 w-full">
+     <button
+        onClick={() => navigate(-1)}          
+        className="text-blue-600 font-bold"      >          
+        ← Back 
+    </button>
       {/* Header Section */}
       <div className="bg-white p-4 shadow-md rounded-lg">
         <h1 className="text-2xl font-bold">{list.group_name}</h1>
