@@ -50,12 +50,10 @@ const Group = () => {
     ← Back 
   </button>
 
-  {/* Header Section */}
   <div className="bg-white p-4 shadow-md rounded-lg relative">
     <h1 className="text-2xl font-bold">{list.group_name}</h1>
     <p className="text-gray-600 mt-2">{list.description}</p>
 
-    {/* Restore Button */}
     <button
       onClick={handleRestore}
       className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
@@ -68,7 +66,6 @@ const Group = () => {
     </div>
   </div>
 
-  {/* Tabs Section */}
   <div className="mt-6">
     <h2 className="text-xl font-semibold mb-4">Tabs</h2>
     {listData && listData.length > 0 ? (
@@ -78,19 +75,15 @@ const Group = () => {
           key={index}
           className="bg-white p-4 shadow-md rounded-lg flex items-center space-x-4"
         >
-          {/* Favicon */}
           <img src={tab.favicon_url} alt="" className="w-10 h-10 flex-shrink-0" />
           
-          {/* Title */}
           <span className="flex-1 truncate">{tab.title}</span>
           
-          {/* URL */}
           <a href={tab.url}
             target="_blank"
             rel="noopener noreferrer" 
             className="flex-1 truncate text-gray-500">{tab.url} </a>
           
-          {/* Remove Button */}
           <button
             className="text-red-500 hover:underline flex-shrink-0"
             onClick={() => RemoveFromList(tab.url)}
@@ -116,10 +109,7 @@ interface AddTabDialogProp {
 
 const getFaviconUrl = async (websiteUrl: string): Promise<string> => {
   try {
-    // Ensure the URL has a protocol
     const normalizedUrl = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`;
-
-    // Use Google Favicon API to get the favicon
     const googleFaviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(normalizedUrl).hostname}&sz=64`;
     return googleFaviconUrl;
 
