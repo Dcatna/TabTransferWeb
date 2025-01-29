@@ -52,7 +52,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
 const CreateTabList = () => {
   const [listName, setListName] = useState("");
   const [description, setDescription] = useState("");
-
+  const refreshList = useUserStore((state) => state.refreshUserLists)
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -67,10 +67,10 @@ const CreateTabList = () => {
       }
 
       console.log("Tab list created:", data);
-      alert("Tab list created successfully!");
-
       setListName("");
       setDescription("");
+      refreshList()
+      
     } catch (err) {
       console.error("Unexpected error:", err);
       alert("An unexpected error occurred. Please try again.");

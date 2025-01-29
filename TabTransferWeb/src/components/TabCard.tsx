@@ -7,6 +7,7 @@ interface TabCardProps {
 }
 
 const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
+
   const restoreTabs = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     tabs.forEach((tab) => {
@@ -15,30 +16,31 @@ const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
   };
 
   return (
-    <div className="border-black border p-4 rounded-md shadow-md w-full max-w-md mx-auto">
+    <div className="border border-black p-4 rounded-md shadow-md w-full max-w-md mx-auto bg-white">
       <div
-        className="cursor-pointer flex justify-between items-center bg-gray-100 p-3 rounded-md"
+        className="cursor-pointer flex items-center justify-between p-3 rounded-md"
         onClick={toggleDropdown}
         role="button"
         aria-expanded={isExpanded}
       >
-        <h2 className="text-lg font-medium">Tabs Group</h2>
-        <button
-          onClick={restoreTabs}
-          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 focus:outline-none"
-        >
-          Restore All
-        </button>
-        <span>{isExpanded ? "▲" : "▼"}</span>
+        <h2 className="text-lg font-medium flex-1">Tabs Group</h2>
+        <div className="flex-shrink-0">
+          <button
+            onClick={restoreTabs}
+            className="bg-violet-500 text-white px-2 py-1 text-sm rounded hover:bg-blue-600 focus:outline-none"
+          >
+            Restore All
+          </button>
+        </div>
+        <span className="ml-2">{isExpanded ? "▲" : "▼"}</span>
       </div>
-
       {isExpanded && (
-        <div className="bg-white mt-2 rounded-md shadow-inner p-3">
+        <div className="bg-gray-50 mt-2 rounded-md shadow-inner p-3">
           <ul className="space-y-2">
             {tabs.map((tab, index) => (
               <li
                 key={index}
-                className="border-b pb-2 flex items-center space-x-2"
+                className="border-b pb-2 flex items-center space-x-3"
               >
                 <img
                   src={tab.favicon_url || "https://via.placeholder.com/16"}
@@ -49,7 +51,7 @@ const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
                   href={tab.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className="text-blue-500 hover:underline truncate flex-1"
                 >
                   {tab.title || tab.url}
                 </a>
@@ -59,6 +61,7 @@ const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
         </div>
       )}
     </div>
+
   );
 };
 
