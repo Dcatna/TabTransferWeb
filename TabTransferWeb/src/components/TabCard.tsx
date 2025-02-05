@@ -1,3 +1,4 @@
+import { DeleteSavedBrowserById } from "@/data/supabaseclient";
 import { Tabs } from "../data/Types";
 
 interface TabCardProps {
@@ -8,6 +9,11 @@ interface TabCardProps {
 
 const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
 
+  function handleDelete() {
+    tabs.forEach(async tab => {
+      await DeleteSavedBrowserById(tab.id, tab.user_id, tab.url, tab.created_at)
+    })
+  }
   const restoreTabs = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     tabs.forEach((tab) => {
@@ -15,8 +21,10 @@ const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
     });
   };
 
+  
   return (
-    <div className="border border-black p-4 rounded-md shadow-md w-full max-w-md mx-auto bg-white">
+    <div className="border border-black p-4 rounded-md shadow-md bg-white 
+                  w-full flex-grow transition-all">
       <div
         className="cursor-pointer flex items-center justify-between p-3 rounded-md"
         onClick={toggleDropdown}
@@ -30,6 +38,9 @@ const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
             className="bg-violet-500 text-white px-2 py-1 text-sm rounded hover:bg-blue-600 focus:outline-none"
           >
             Restore All
+          </button>
+          <button onClick={() => handleDelete()} className="bg-violet-500 text-white px-2 py-1 text-sm rounded hover:bg-blue-600 focus:outline-none ml-1">
+            Delete
           </button>
         </div>
         <span className="ml-2">{isExpanded ? "▲" : "▼"}</span>

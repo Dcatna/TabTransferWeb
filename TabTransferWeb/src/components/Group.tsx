@@ -1,4 +1,4 @@
-import { DeleteGroupItemByName, GetListItemsByName, InsertGroupItemByName } from "@/data/supabaseclient";
+import { DeleteGroupByName, DeleteGroupItemByName, GetListItemsByName, InsertGroupItemByName } from "@/data/supabaseclient";
 import { GroupResponse } from "@/data/Types";
 import { useUserStore } from "@/data/userstore";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
@@ -6,12 +6,15 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DialogHeader } from "./ui/dialog";
 import type { Group } from "@/data/Types";
+
 const Group = () => {
   const location = useLocation();
   const list = location.state as Group;
   const user = useUserStore((state) => state.userData?.user);
   const navigate = useNavigate()
   const [listData, setListData] = useState<GroupResponse[] | undefined>([]);
+  const refreshLists = useUserStore((state) => state.refreshUserLists)
+
 
   useEffect(() => {
     async function getListData() {
@@ -35,6 +38,12 @@ const Group = () => {
     await refreshListData();
   }
 
+  async function handleDelete() {
+    await DeleteGroupByName(list.group_name, user!!.id)
+    refreshLists()
+    navigate("/home")
+  }
+  
   const handleRestore = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     listData?.forEach((tab) => {
@@ -44,7 +53,7 @@ const Group = () => {
   return (
 <div className="min-h-screen bg-gray-100 p-4 w-full">
   <button
-    onClick={() => navigate(-1)}          
+    onClick={() => navigate("/home")}          
     className="text-blue-600 font-bold"      
   >          
     ← Back 
@@ -54,13 +63,19 @@ const Group = () => {
     <h1 className="text-2xl font-bold">{list.group_name}</h1>
     <p className="text-gray-600 mt-2">{list.description}</p>
 
-    <button
-      onClick={handleRestore}
-      className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
-    >
-      Restore
-    </button>
-
+    <div className="absolute top-4 right-4">
+      <button
+        onClick={handleRestore}
+        className=" bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 mr-1"
+      >
+        Restore
+      </button>
+      <button 
+        onClick={handleDelete}
+        className=" bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600">
+        Delete Group
+      </button>
+    </div>
     <div className="mt-6">
       <AddTabDialog group_name={list.group_name} refreshList={refreshListData} />
     </div>

@@ -17,7 +17,6 @@ function App() {
     <SidebarProvider className="max-h-screen overflow-hidden">
       <AppSidebar variant="inset" collapsible="icon" />
 
-
       <Outlet />
     
 

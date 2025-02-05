@@ -53,6 +53,7 @@ const CreateTabList = () => {
   const [listName, setListName] = useState("");
   const [description, setDescription] = useState("");
   const refreshList = useUserStore((state) => state.refreshUserLists)
+  const [open, setOpen] = useState(false);
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -70,6 +71,7 @@ const CreateTabList = () => {
       setListName("");
       setDescription("");
       refreshList()
+      setOpen(false);
       
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -78,8 +80,8 @@ const CreateTabList = () => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
         Create Tab List
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">

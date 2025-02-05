@@ -129,3 +129,25 @@ export async function DeleteGroupItemByName(group_name: string, user_id: string,
     }
     return true
 }
+
+export async function DeleteSavedBrowserById(id: number, user_id: string, url: string, created_at: string) {
+    const res = await supabase.from("Tabs").delete().eq("id", id).eq("user_id", user_id).eq("url", url).eq("created_at", created_at)
+
+    if(res.error) {
+        console.log(res.error)
+        return false
+    }
+    return true
+
+}
+
+export async function DeleteGroupByName(group_name: string, user_id:string) {
+    const res = await supabase.from("Groups").delete().eq("group_name", group_name).eq("user_id", user_id)
+
+    if(res.error) {
+        console.log(res.error)
+        return false
+    }
+
+    return true
+}
