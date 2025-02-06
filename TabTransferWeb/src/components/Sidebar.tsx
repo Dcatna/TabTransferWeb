@@ -14,14 +14,20 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { supabase } from "@/data/supabaseclient";
+import { SignOut, supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   //const user = useUserStore((state) => state.userData?.user)
   const lists = useUserStore((state) => state.lists) || []
+  const navigate = useNavigate()
+  async function handleSignout() {
+    await SignOut()
+    navigate("/signin")
+  }
+
   return (
     <Sidebar
       {...props}
@@ -30,6 +36,10 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
     >
  
       <SidebarHeader className="bg-violet-500 p-4 text-white text-lg font-semibold">
+        <button 
+          className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md"
+          onClick={handleSignout}
+          >Signout</button>
         <CreateTabList />
       </SidebarHeader>
 
@@ -43,7 +53,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       </SidebarContent>
       
       <SidebarFooter className="p-4 bg-gray-200 text-sm text-gray-600 text-center">
-        Footer Content
+        About this App
       </SidebarFooter>
     </Sidebar>
   );

@@ -1,16 +1,12 @@
+import { GetSignedInUser, supabase } from '@/data/supabaseclient'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect, useState } from 'react'
-import { GetSignedInUser, supabase } from '../data/supabaseclient'
-import { Link, useNavigate } from "react-router-dom";
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form'
+import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
+import { IFormInput } from './Signin'
 
-export interface IFormInput {
-    email: string;
-    password: string;
-  }
-const Signin = () => {
-
+const Signup = () => {
     const navigator = useNavigate()
     useEffect(() => {
         async function checkUser(){
@@ -45,7 +41,7 @@ const Signin = () => {
 async function submitForm (formData : IFormInput) {
     try {
         console.log(formData.email, formData.password)
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
         });
@@ -58,9 +54,9 @@ async function submitForm (formData : IFormInput) {
         if (data) {
           // Use the 'data.user' object as needed
           console.log(data)
-          navigator("/home")
+          navigator("/signin")
         }
-        navigator("/home")
+        navigator("/signin")
       } catch (error) {
         handleButtonClick()
         if (error instanceof Error) {  // Type guard
@@ -78,7 +74,7 @@ async function submitForm (formData : IFormInput) {
     <div className=" w-full flex flex-col items-center justify-center">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-violet-600 mb-2">Sign In!</h1>
+          <h1 className="text-2xl font-bold text-violet-600 mb-2">Sign Up!</h1>
           <p className="text-gray-600 mb-4">Please enter your email and password</p>
         </div>
 
@@ -110,21 +106,21 @@ async function submitForm (formData : IFormInput) {
             }`}
             type="submit"
           >
-            Login
+            Create Account
           </button>
         </form>
 
         <p className="text-gray-500 text-sm text-center mt-4">
-          By logging in, you agree to our terms and conditions 😉
+          By creating an account in, you agree to our terms and conditions 😉
         </p>
 
         <div className="text-center mt-6">
-          <p className="text-gray-600">Don’t have an account yet?</p>
+          <p className="text-gray-600">Already have an account?</p>
           <Link
-            to="/signup"
+            to="/signin"
             className="text-violet-500 hover:underline font-medium"
           >
-            Create Account
+            Sign in
           </Link>
         </div>
       </div>
@@ -134,4 +130,4 @@ async function submitForm (formData : IFormInput) {
   )
 }
 
-export default Signin
+export default Signup

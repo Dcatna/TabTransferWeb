@@ -23,8 +23,7 @@ const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
 
   
   return (
-    <div className="border border-black p-4 rounded-md shadow-md bg-white 
-                  w-full flex-grow transition-all">
+    <div className="border border-black p-4 rounded-md shadow-md bg-white w-full flex-grow transition-all">
       <div
         className="cursor-pointer flex items-center justify-between p-3 rounded-md"
         onClick={toggleDropdown}
