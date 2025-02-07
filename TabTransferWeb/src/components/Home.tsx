@@ -55,14 +55,16 @@ const toggleCard = (index: number) => {
   return (
     <div className="">
 
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 p-4 items-start">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 grid-flow-row-dense auto-rows-[minmax(100px, auto)]">
         {groupedTabs?.map((group, index) => (
-           <TabCard
-           tabs={group}
-           key={index}
-           isExpanded={expandedCards[index] || false} 
-           toggleDropdown={() => toggleCard(index)}
-         />
+          <div className='w-full'>
+            <TabCard
+            tabs={group}
+            key={index}
+            isExpanded={expandedCards[index] || false} 
+            toggleDropdown={() => toggleCard(index)}
+            />
+         </div>
         ))}
       </div>
     </div>

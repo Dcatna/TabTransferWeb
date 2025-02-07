@@ -39,7 +39,7 @@ const Group = () => {
   }
 
   async function handleDelete() {
-    await DeleteGroupByName(list.group_name, user!!.id)
+    await DeleteGroupByName(list.group_name, user!.id)
     refreshLists()
     navigate("/home")
   }

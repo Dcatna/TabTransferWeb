@@ -53,11 +53,27 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       </SidebarContent>
       
       <SidebarFooter className="p-4 bg-gray-200 text-sm text-gray-600 text-center">
-        About this App
+        <AboutSection/>
       </SidebarFooter>
     </Sidebar>
   );
 };
+
+const AboutSection = () => {
+  return (
+    <Dialog >
+      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" >
+        About This App
+      </DialogTrigger>
+      <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
+        <DialogDescription className="text-sm text-gray-600">
+          Tab Transfer is a web application designed to help users easily transfer tabs between their browsers. Users can create groups, add tabs, and save their lists for easy access.
+          Users should also download the chrome extension TabTransfer tab be able to save their browser state.
+        </DialogDescription>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 const CreateTabList = () => {
   const [listName, setListName] = useState("");
