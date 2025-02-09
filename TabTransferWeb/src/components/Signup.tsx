@@ -51,12 +51,12 @@ async function submitForm (formData : IFormInput) {
 
         }
     
-        if (data) {
+        else if (data) {
           // Use the 'data.user' object as needed
           console.log(data)
           navigator("/signin")
         }
-        navigator("/signin")
+
       } catch (error) {
         handleButtonClick()
         if (error instanceof Error) {  // Type guard
@@ -74,7 +74,7 @@ async function submitForm (formData : IFormInput) {
     <div className=" w-full flex flex-col items-center justify-center">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-violet-600 mb-2">Sign Up!</h1>
+          <h1 className="text-2xl font-bold text-brandYellow mb-2">Sign Up!</h1>
           <p className="text-gray-600 mb-4">Please enter your email and password</p>
         </div>
 
@@ -83,7 +83,7 @@ async function submitForm (formData : IFormInput) {
             <input
               type="text"
               placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandYellow"
               {...register("email")}
             />
             <p className="text-red-500 text-sm mt-1">{errors.email?.message}</p>
@@ -93,7 +93,7 @@ async function submitForm (formData : IFormInput) {
             <input
               type="password"
               placeholder="Password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandYellow"
               {...register("password")}
             />
             <p className="text-red-500 text-sm mt-1">{errors.password?.message}</p>
@@ -101,7 +101,7 @@ async function submitForm (formData : IFormInput) {
 
           <button
             onClick={errors.password || errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2 text-white bg-violet-500 hover:bg-violet-600 rounded-md transition-all duration-300 ${
+            className={`w-full py-2 text-white bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
@@ -118,7 +118,7 @@ async function submitForm (formData : IFormInput) {
           <p className="text-gray-600">Already have an account?</p>
           <Link
             to="/signin"
-            className="text-violet-500 hover:underline font-medium"
+            className="text-brandYellow hover:underline font-medium"
           >
             Sign in
           </Link>

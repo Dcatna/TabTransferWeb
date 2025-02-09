@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
-import { GetSignedInUser, supabase } from '../data/supabaseclient'
+import { GetSignedInUser } from '../data/supabaseclient'
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
+import { useUserStore } from '@/data/userstore';
 
 export interface IFormInput {
     email: string;
     password: string;
   }
 const Signin = () => {
-
+  const signInFunction = useUserStore((state) => state.signIn)
     const navigator = useNavigate()
     useEffect(() => {
         async function checkUser(){
@@ -21,6 +22,7 @@ const Signin = () => {
         }
         checkUser()
     }, [navigator])
+
     const schema = yup.object().shape({
         email: yup.string().email().required(),
         password: yup.string().min(6).max(15).required()
@@ -45,27 +47,27 @@ const Signin = () => {
 async function submitForm (formData : IFormInput) {
     try {
         console.log(formData.email, formData.password)
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
         
-        if (error) {
-          throw error;
-
+        const res = await signInFunction(formData.email, formData.password)
+        console.log(res, "HELKLO")
+        if (res === false) {
+          console.log("Error Signing in")
+          alert("Error Signing in")
+          navigator("/signin")
         }
     
-        if (data) {
+        else if (res === true) {
           // Use the 'data.user' object as needed
-          console.log(data)
+          console.log("Esdfdsf")
           navigator("/home")
         }
-        navigator("/home")
+  
       } catch (error) {
         handleButtonClick()
         if (error instanceof Error) {  // Type guard
-            showAlertAfterAnimation(error.message)
             
+            showAlertAfterAnimation(error.message)
+            navigator("/signin")
           } else {
             // Handle cases where error is not an instance of Error
             handleButtonClick()
@@ -78,7 +80,7 @@ async function submitForm (formData : IFormInput) {
     <div className=" w-full flex flex-col items-center justify-center">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-violet-600 mb-2">Sign In!</h1>
+          <h1 className="text-2xl font-bold text-brandYellow mb-2">Sign In!</h1>
           <p className="text-gray-600 mb-4">Please enter your email and password</p>
         </div>
 
@@ -87,7 +89,7 @@ async function submitForm (formData : IFormInput) {
             <input
               type="text"
               placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandYellow"
               {...register("email")}
             />
             <p className="text-red-500 text-sm mt-1">{errors.email?.message}</p>
@@ -97,7 +99,7 @@ async function submitForm (formData : IFormInput) {
             <input
               type="password"
               placeholder="Password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandYellow"
               {...register("password")}
             />
             <p className="text-red-500 text-sm mt-1">{errors.password?.message}</p>
@@ -105,7 +107,7 @@ async function submitForm (formData : IFormInput) {
 
           <button
             onClick={errors.password || errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2 text-white bg-violet-500 hover:bg-violet-600 rounded-md transition-all duration-300 ${
+            className={`w-full py-2 bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
@@ -122,7 +124,7 @@ async function submitForm (formData : IFormInput) {
           <p className="text-gray-600">Don’t have an account yet?</p>
           <Link
             to="/signup"
-            className="text-violet-500 hover:underline font-medium"
+            className="text-brandYellow hover:underline font-medium"
           >
             Create Account
           </Link>

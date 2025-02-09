@@ -7,7 +7,7 @@ import {create } from "zustand"
 export interface UserStore {
     userData: UserData | undefined;
     lists: Group[];
-    signIn: (email: string, password: string) => Promise<boolean>;
+    signIn: (email: string, password: string) => Promise<boolean >;
     refreshUserLists: () => Promise<void>;
     refreshUser: () => Promise<void>;
     signOut: () => Promise<void>;
@@ -98,7 +98,21 @@ export interface UserStore {
     },
     signIn: async (email: string, password: string) => {
       const result = await signInWithEmailAndPassword(email, password);
+      
       if(result) {
+        console.log("HELLLOOO", result.user.id)
+        const stored = await getUserById(result.user.id)
+        if (!stored) {
+          console.warn("User ID not found in database");
+          return false;
+        }
+        set({
+          userData: {
+            user: result.user,
+            stored: stored,
+          }
+        })
+        get().refreshUserLists();
         return true
       }
       return false

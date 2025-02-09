@@ -18,10 +18,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { SignOut, supabase } from "@/data/supabaseclient";
+import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { cn } from "@/lib/utils";
-import { HomeIcon, LogOutIcon, LucideIcon, Plus } from "lucide-react";
+import { HomeIcon, InfoIcon, LogOutIcon, LucideIcon, Plus } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -31,41 +31,41 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   onClick?: () => void;
   selected?: boolean;
 }
+export function SidebarItem(props: SidebarProps) {
+  const { open } = useSidebar();
+  return (
+    <SidebarMenuItem className={cn( props.className,  
+      "fade-in fade-out transition-all duration-350 ease-in-out",
+      "text-md line-clamp-1 overflow-ellipsis"
+    )}>
+      <SidebarMenuButton
+        variant={props.selected ? "outline" : "default"}
+        onClick={props.onClick}
+        className="w-full h-full"
+      >
+
+        <props.icon />
+        <text
+          className={open ? "opacity-100" : "opacity-0"}
+        >
+          {props.name}
+        </text>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+}
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
-  //const user = useUserStore((state) => state.userData?.user)
-  const lists = useUserStore((state) => state.lists) || []
+  const lists = useUserStore((state) => state.lists)
   const navigate = useNavigate()
+  const signOutFunction = useUserStore((state) => state.signOut)
 
   async function handleSignout() {
-    await SignOut()
+    await signOutFunction()
     navigate("/signin")
   }
 
-  function SidebarItem(props: SidebarProps) {
-    const { open } = useSidebar();
-    return (
-      <SidebarMenuItem className={cn( props.className,  
-        "fade-in fade-out transition-all duration-350 ease-in-out",
-        "text-md line-clamp-1 overflow-ellipsis"
-      )}>
-        <SidebarMenuButton
-          variant={props.selected ? "outline" : "default"}
-          onClick={props.onClick}
-          className="w-full h-full"
-        >
-          
-          <props.icon />
-          <text
-            className={open ? "opacity-100" : "opacity-0"}
-          >
-            {props.name}
-          </text>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    );
-  }
-
+ 
   return (
     <Sidebar
       {...props}
@@ -101,13 +101,13 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
 const AboutSection = () => {
   return (
     <Dialog >
-      <DialogTrigger className="bg-white text-yellow-600 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" >
-        About This App
+      <DialogTrigger className="bg-white text-yellow-600 hover:bg-violet-100  rounded-lg shadow-md" >
+      <SidebarItem name={"About This App"} icon={InfoIcon} />
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
         <DialogDescription className="text-sm text-gray-600">
           Tab Transfer is a web application designed to help users easily transfer tabs between their browsers. Users can create groups, add tabs, and save their lists for easy access.
-          Users should also download the chrome extension TabTransfer tab be able to save their browser state.
+          Users should also download the chrome extension TabTransfer to be able to save their browser state.
         </DialogDescription>
       </DialogContent>
     </Dialog>
@@ -144,29 +144,6 @@ const CreateTabList = () => {
     }
   };
 
-
-  function SidebarItem(props: SidebarProps) {
-    const { open } = useSidebar();
-    return (
-      <SidebarMenuItem className={cn( props.className,  
-        "fade-in fade-out transition-all duration-350 ease-in-out",
-        "text-md line-clamp-1 overflow-ellipsis"
-      )}>
-        <SidebarMenuButton
-          variant={props.selected ? "outline" : "default"}
-          onClick={props.onClick}
-          className="w-full h-full"
-        >
-          <props.icon />
-          <text
-            className={open ? "opacity-100" : "opacity-0"}
-          >
-            {props.name}
-          </text>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    );
-  }
 
   return (
     

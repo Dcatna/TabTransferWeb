@@ -17,7 +17,7 @@ export type UserData = {
 
 export type StoredUser = {
     email: string;
-    profile_image: string | null;
+
     user_id: string;
     username: string;
 }
