@@ -56,7 +56,7 @@ export interface UserStore {
         console.log(event, session)
 
         if (event === "INITIAL_SESSION") {
-          
+          console.log('inital session')
         } else if (event === "SIGNED_IN") {
           // handle sign in event
           get()

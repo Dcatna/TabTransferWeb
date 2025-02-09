@@ -13,43 +13,82 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { SignOut, supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
+import { cn } from "@/lib/utils";
+import { HomeIcon, LogOutIcon, LucideIcon, Plus } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  name: string;
+  icon: LucideIcon;
+  onClick?: () => void;
+  selected?: boolean;
+}
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   //const user = useUserStore((state) => state.userData?.user)
   const lists = useUserStore((state) => state.lists) || []
   const navigate = useNavigate()
+
   async function handleSignout() {
     await SignOut()
     navigate("/signin")
+  }
+
+  function SidebarItem(props: SidebarProps) {
+    const { open } = useSidebar();
+    return (
+      <SidebarMenuItem className={cn( props.className,  
+        "fade-in fade-out transition-all duration-350 ease-in-out",
+        "text-md line-clamp-1 overflow-ellipsis"
+      )}>
+        <SidebarMenuButton
+          variant={props.selected ? "outline" : "default"}
+          onClick={props.onClick}
+          className="w-full h-full"
+        >
+          
+          <props.icon />
+          <text
+            className={open ? "opacity-100" : "opacity-0"}
+          >
+            {props.name}
+          </text>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
   }
 
   return (
     <Sidebar
       {...props}
       collapsible="icon"
+      variant="sidebar"
       className="max-h-screen overflow-hidden border-r border-gray-300 bg-gray-100"
     >
- 
+
       <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
-        <button 
-          className="bg-white text-brandYellow hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md"
-          onClick={handleSignout}
-          >Signout</button>
+        <SidebarItem name="Signout" icon={LogOutIcon} className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={handleSignout}/>
         <CreateTabList />
       </SidebarHeader>
-
-      <SidebarContent className="p-4 space-y-4">
-        {lists.map((list, index) => (
-          
+ 
+      <SidebarContent className=" space-y-4">
+      <SidebarGroup>
+      <SidebarMenu>
+      {lists.map((list, index) => (
           <Link to={`group/${list.id}`} state={list} className="border border-brandYellow rounded-md hover:bg-hoverColor">
-            <SidebarGroup className="p-3 bg-white rounded-lg shadow-md" key={index}>{list.group_name}</SidebarGroup>
+            <SidebarItem key={index} icon={HomeIcon} name={list.group_name}></SidebarItem>
           </Link>
         ))}
+      </SidebarMenu>
+      </SidebarGroup>
       </SidebarContent>
       
       <SidebarFooter className="p-4 bg-gray-200 text-sm text-gray-600 text-center">
@@ -105,10 +144,36 @@ const CreateTabList = () => {
     }
   };
 
+
+  function SidebarItem(props: SidebarProps) {
+    const { open } = useSidebar();
+    return (
+      <SidebarMenuItem className={cn( props.className,  
+        "fade-in fade-out transition-all duration-350 ease-in-out",
+        "text-md line-clamp-1 overflow-ellipsis"
+      )}>
+        <SidebarMenuButton
+          variant={props.selected ? "outline" : "default"}
+          onClick={props.onClick}
+          className="w-full h-full"
+        >
+          <props.icon />
+          <text
+            className={open ? "opacity-100" : "opacity-0"}
+          >
+            {props.name}
+          </text>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  }
+
   return (
+    
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="bg-white text-brandYellow hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
-        Create Tab List
+      
+      <DialogTrigger className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={() => setOpen(true)}>
+        <SidebarItem name={"Create Tab List"} icon={Plus} />
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
         <DialogHeader>

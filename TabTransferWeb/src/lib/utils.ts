@@ -53,26 +53,3 @@ export function getOrThrow<T, E = string>(result: Result<T, E>): T {
   }
 }
 
-function minByOrNull<T, R >(this: Array<T>, selector: (v: T) => R): T | undefined {
-  if (!(this.length > 0)) return undefined
-  var minElem = this[0]
-  if (!(this.length > 1)) return minElem
-  var minValue = selector(minElem)
-  for (let i = 1; i < this.length; ++i) {
-    const e = this[i]
-    const v = selector(e)
-    if (minValue > v) {
-      minElem = e
-      minValue = v
-    }
-  }
-  return minElem
-}
-
-declare global {
-  interface Array<T> {
-    minByOrNull<T, R>(selector: (v: T) => R): T | undefined
-  }
-}
-
-Array.prototype.minByOrNull = minByOrNull

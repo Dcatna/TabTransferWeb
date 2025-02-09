@@ -1,14 +1,14 @@
 
 
 import { useEffect, useState } from 'react'
-import { GetMostRecentUserTabs, GetUserTabsWithinMonth, supabase } from '../data/supabaseclient'
+import {  GetUserTabsWithinMonth, supabase } from '../data/supabaseclient'
 import TabCard from './TabCard'
 import { Tabs } from '../data/Types'
 
 
 const Home = () => {
 
-    const [recentTabs, setRecentTabs] = useState<Tabs[]>([])
+    //const [recentTabs, setRecentTabs] = useState<Tabs[]>([])
     const [groupedTabs, setGroupedTabs] = useState<Tabs[][] | undefined>([]);
     const [deleted, setDeleted] = useState<boolean>(false)
 
