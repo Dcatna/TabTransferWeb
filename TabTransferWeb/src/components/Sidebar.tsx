@@ -35,9 +35,9 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       className="max-h-screen overflow-hidden border-r border-gray-300 bg-gray-100"
     >
  
-      <SidebarHeader className="bg-violet-500 p-4 text-white text-lg font-semibold">
+      <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
         <button 
-          className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md"
+          className="bg-white text-brandYellow hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md"
           onClick={handleSignout}
           >Signout</button>
         <CreateTabList />
@@ -46,7 +46,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       <SidebarContent className="p-4 space-y-4">
         {lists.map((list, index) => (
           
-          <Link to={`group/${list.id}`} state={list}>
+          <Link to={`group/${list.id}`} state={list} className="border border-brandYellow rounded-md hover:bg-hoverColor">
             <SidebarGroup className="p-3 bg-white rounded-lg shadow-md" key={index}>{list.group_name}</SidebarGroup>
           </Link>
         ))}
@@ -62,7 +62,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
 const AboutSection = () => {
   return (
     <Dialog >
-      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" >
+      <DialogTrigger className="bg-white text-yellow-600 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" >
         About This App
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
@@ -107,7 +107,7 @@ const CreateTabList = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
+      <DialogTrigger className="bg-white text-brandYellow hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
         Create Tab List
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">

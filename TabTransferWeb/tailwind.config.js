@@ -14,6 +14,9 @@ export default {
     			sm: 'calc(var(--radius) - 4px)'
     		},
     		colors: {
+				sideBarColor: '#ffdb4d',
+				brandYellow: "#ffcc00",
+				hoverColor: "#ffa500",
     			background: 'hsl(var(--background))',
     			foreground: 'hsl(var(--foreground))',
     			card: {

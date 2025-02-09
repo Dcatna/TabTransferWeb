@@ -3,49 +3,77 @@ import { Tabs } from "../data/Types";
 
 interface TabCardProps {
   tabs: Tabs[];
-  isExpanded: boolean;
-  toggleDropdown: () => void;
+  onDelete: () => void;
 }
 
-const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
+const TabCard = ({ tabs, onDelete }: TabCardProps) => {
 
   function handleDelete() {
     tabs.forEach(async tab => {
       await DeleteSavedBrowserById(tab.id, tab.user_id, tab.url, tab.created_at)
+      
     })
+    onDelete()
+
   }
+
+
   const restoreTabs = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     tabs.forEach((tab) => {
       window.open(tab.url, "_blank");
     });
   };
+  const getRelativeTime = (timestamp: string) => {
+    const createdAt = new Date(timestamp);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - createdAt.getTime()) / 1000);
 
+    const intervals: { [key: string]: number } = {
+      year: 31536000,
+      month: 2592000,
+      week: 604800,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+      second: 1,
+    };
+
+    for (const key in intervals) {
+      const value = intervals[key];
+      const elapsed = Math.floor(diffInSeconds / value);
+      if (elapsed > 0) {
+        return elapsed === 1
+          ? `1 ${key} ago`
+          : `${elapsed} ${key}s ago`;
+      }
+    }
+
+    return "Just now";
+  };
   
   return (
-    <div className="border border-black p-4 rounded-md shadow-md bg-white w-full min-w-[450px] max-w-md flex-grow transition-all">
+    <div className="border border-black p-4 rounded-md shadow-md bg-gray-100 w-full max-w-[450px] flex-grow transition-all">
       <div
         className="cursor-pointer flex items-center justify-between p-3 rounded-md"
-        onClick={toggleDropdown}
         role="button"
-        aria-expanded={isExpanded}
       >
-        <h2 className="text-lg font-medium flex-1 truncate">Tabs Group</h2>
+        <h2 className="text-lg font-medium flex-1 truncate">Saved - {getRelativeTime(tabs[0].created_at)}</h2>
         <div className="flex-shrink-0">
           <button
             onClick={restoreTabs}
-            className="bg-violet-500 text-white px-2 py-1 text-sm rounded hover:bg-blue-600 focus:outline-none"
+            className="bg-brandYellow  px-2 py-1 text-sm rounded hover:bg-hoverColor focus:outline-none"
           >
             Restore All
           </button>
-          <button onClick={() => handleDelete()} className="bg-violet-500 text-white px-2 py-1 text-sm rounded hover:bg-blue-600 focus:outline-none ml-1">
+          <button onClick={() => handleDelete()} className="bg-brandYellow px-2 py-1 text-sm rounded hover:bg-hoverColor focus:outline-none ml-1">
             Delete
           </button>
         </div>
-        <span className="ml-2">{isExpanded ? "▲" : "▼"}</span>
+    
       </div>
       {/* Expandable Content */}
-      <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? "max-h-screen" : "max-h-0"}`}>
+      <div className="h-[200px] max-h-[200px] overflow-y-auto scrollbar-thin ">
         <ul className="mt-2 space-y-2">
           {tabs.map((tab, index) => (
             <li key={index} className="flex items-center space-x-2">
@@ -57,6 +85,8 @@ const TabCard = ({ tabs, isExpanded, toggleDropdown }: TabCardProps) => {
           ))}
         </ul>
       </div>
+
+
     </div>
 
   );
