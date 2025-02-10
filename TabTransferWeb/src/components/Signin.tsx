@@ -46,10 +46,8 @@ const Signin = () => {
     
 async function submitForm (formData : IFormInput) {
     try {
-        console.log(formData.email, formData.password)
         
         const res = await signInFunction(formData.email, formData.password)
-        console.log(res, "HELKLO")
         if (res === false) {
           console.log("Error Signing in")
           alert("Error Signing in")
@@ -58,7 +56,6 @@ async function submitForm (formData : IFormInput) {
     
         else if (res === true) {
           // Use the 'data.user' object as needed
-          console.log("Esdfdsf")
           navigator("/home")
         }
   

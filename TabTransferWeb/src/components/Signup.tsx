@@ -40,20 +40,19 @@ const Signup = () => {
     
 async function submitForm (formData : IFormInput) {
     try {
-        console.log(formData.email, formData.password)
         const { data, error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
         });
         
         if (error) {
+          console.log(error.message)
           throw error;
 
         }
     
         else if (data) {
           // Use the 'data.user' object as needed
-          console.log(data)
           navigator("/signin")
         }
 

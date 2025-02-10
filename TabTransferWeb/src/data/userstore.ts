@@ -29,10 +29,7 @@ export interface UserStore {
   
       // Parse the JSON strings into objects
       const user = userString ? JSON.parse(userString) : null;
-      const stored = storedString ? JSON.parse(storedString) : null;
-  
-      console.log("Parsed localStorage data:", user, stored);
-  
+      const stored = storedString ? JSON.parse(storedString) : null;  
       // Validate the data and return UserData if valid
       if (user && stored && user.user.id === stored.user_id) {
         return {
@@ -50,14 +47,12 @@ export interface UserStore {
     userData: getInitialUserData(),
     lists: [],
     init: () => {
-      console.log("Initializing user store...");
+
 
       const { data } = supabase.auth.onAuthStateChange((event, session) => {
         console.log(event, session)
 
-        if (event === "INITIAL_SESSION") {
-          console.log('inital session')
-        } else if (event === "SIGNED_IN") {
+         if (event === "SIGNED_IN") {
           // handle sign in event
           get()
             .refreshUser()
@@ -100,7 +95,6 @@ export interface UserStore {
       const result = await signInWithEmailAndPassword(email, password);
       
       if(result) {
-        console.log("HELLLOOO", result.user.id)
         const stored = await getUserById(result.user.id)
         if (!stored) {
           console.warn("User ID not found in database");
@@ -147,13 +141,11 @@ export interface UserStore {
   
     refreshUserLists: async () => {
       const user_id = get().userData?.user.id
-      console.log(user_id, "USER");
       if(!user_id) {
         set({lists: []})
 
       } else {
         const result = await GetUserGroups(user_id)
-        console.log(result)
         set({lists:result})
       }
     },
@@ -171,14 +163,13 @@ export interface UserStore {
     },
   
     createList: async (name: string, description: string, pub: boolean) => {
-      const { data, error } = await supabase
+      const res= await supabase
         .from("Groups")
         .insert([{ group_name: name, description, public: pub }]);
-      if (error) {
-        console.error("Error creating list:", error.message);
+      if (res.error) {
+        console.error("Error creating list:", res.error.message);
         return;
       }
-      console.log("List created:", data);
       get().refreshUserLists();
     },
   
@@ -188,7 +179,6 @@ export interface UserStore {
         console.error("Error deleting list:", error.message);
         return;
       }
-      console.log("List deleted.");
       get().refreshUserLists();
     },
     
@@ -196,17 +186,10 @@ export interface UserStore {
 
   async function initializeUser(): Promise<Result<UserData, unknown>> {
     const user = await supabase.auth.getUser();
-    console.log(user, "INITAL USER")
     if (user.error) {
       return failureResult(user.error);
     }
-  
-    // const stored = await getUserById(user.data.user.id);
-    // console.log(stored, "INITAL STORED")
-    // if (!stored) {
-    //   return failureResult(stored);
-    // }
-  
+
     return successResult({
       user: user.data.user,
       stored: {

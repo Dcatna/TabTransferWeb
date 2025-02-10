@@ -22,6 +22,7 @@ import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { cn } from "@/lib/utils";
 import { HomeIcon, InfoIcon, LogOutIcon, LucideIcon, Plus } from "lucide-react";
+import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -127,17 +128,17 @@ const CreateTabList = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data, error } = await supabase
+      const res = await supabase
         .from("Groups")
         .insert({ group_name: listName, description: description, user_id: (await supabase.auth.getUser()).data.user?.id });
 
-      if (error) {
-        console.error("Error inserting tab list:", error.message);
+      if (res.error) {
+        console.error("Error inserting tab list:", res.error.message);
         alert("Failed to create tab list. Please try again.");
         return;
       }
 
-      console.log("Tab list created:", data);
+
       setListName("");
       setDescription("");
       refreshList()

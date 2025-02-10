@@ -15,12 +15,9 @@ const Home = () => {
   useEffect(() => {
     async function GetRecentTab() {
       const user = await supabase.auth.getUser();
-      console.log(user, "HELo")
       //const tabs = await GetMostRecentUserTabs(user.data.user?.id);
 
       const monthsTabs = await GetUserTabsWithinMonth(user.data.user?.id);
-
-      console.log(monthsTabs, 'MONTHS');
 
       const grouped = (() => {
       const map = new Map<string, Tabs[]>(); // Map to store grouped data
@@ -37,7 +34,6 @@ const Home = () => {
       return Array.from(map.values()); // Convert Map values to array of arrays
     })()
 
-      console.log(grouped, 'Grouped Tabs');
       //setRecentTabs(tabs || []);
       setGroupedTabs(grouped?.reverse());
     }
@@ -49,22 +45,26 @@ const Home = () => {
     function onDelete() {
       setDeleted((prev) => !prev)
     }
+
   return (
-    <div className="">
-
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 grid-flow-row-dense auto-rows-[minmax(100px, auto)]">
-        {groupedTabs?.map((group, index) => (
-          <div className='w-full'>
-            <TabCard
-              tabs={group}
-              key={index} 
-              onDelete={onDelete}
-            />
-         </div>
-        ))}
-      </div>
+    <div className="flex flex-col w-full">
+      {groupedTabs?.length !== 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 grid-flow-row-dense auto-rows-[minmax(100px, auto)]">
+          {groupedTabs?.map((group, index) => (
+            <div className="w-full" key={index}>
+              <TabCard tabs={group} onDelete={onDelete} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-grow items-center justify-center w-full">
+          <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md text-center">
+            <p>No tabs found.</p>
+            <p>Try saving browsers states with the extension TabTransfer</p>
+          </div>
+        </div>
+      )}
     </div>
-
   )
 }
 
