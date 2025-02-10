@@ -105,9 +105,14 @@ const AboutSection = () => {
       <SidebarItem name={"About This App"} icon={InfoIcon} />
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
-        <DialogDescription className="text-sm text-gray-600">
-          Tab Transfer is a web application designed to help users easily transfer tabs between their browsers. Users can create groups, add tabs, and save their lists for easy access.
-          Users should also download the chrome extension TabTransfer to be able to save their browser state.
+        <DialogDescription className="text-sm text-black ">
+        <p className="font-bold">About this App:</p>
+        <p>Tab Transfer is a web application designed to help users easily transfer tabs between their browsers.</p>
+        <p>Users can create groups, add tabs, and save their lists for easy access.</p>
+        <p>Users should also download the chrome extension TabTransfer to be able to save and re-open their browser state with ease.</p>
+        <br/>
+        <p className="font-bold">About Creator:</p>
+        <p>Creator is a college student studying Computer Science and Mathematics at Stevens Institute of Technology.</p>
         </DialogDescription>
       </DialogContent>
     </Dialog>
