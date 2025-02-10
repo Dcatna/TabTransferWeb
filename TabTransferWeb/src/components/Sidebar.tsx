@@ -204,7 +204,7 @@ const CreateTabList = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              className="bg-brandYellow  py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
             >
               Save Tab List
             </button>

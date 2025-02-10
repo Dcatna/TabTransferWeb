@@ -14,13 +14,17 @@ function App() {
   }, [init])
 
   return (
-    <SidebarProvider className="max-h-screen overflow-hidden">
-      <AppSidebar variant="sidebar" collapsible="icon" />
-      <SidebarTrigger />
-      <Outlet />
-    
+    <>
       <Analytics />
-    </SidebarProvider>
+      <SidebarProvider className="max-h-screen overflow-hidden">
+        
+        <AppSidebar variant="sidebar" collapsible="icon" />
+        <SidebarTrigger />
+        <Outlet />
+      
+  
+      </SidebarProvider>
+    </>
   )
 }
 

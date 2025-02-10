@@ -66,13 +66,13 @@ const Group = () => {
     <div className="absolute top-4 right-4">
       <button
         onClick={handleRestore}
-        className=" bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 mr-1"
+        className=" bg-brandYellow px-4 py-2 rounded-lg shadow-md hover:bg-hoverColor mr-1"
       >
         Restore
       </button>
       <button 
         onClick={handleDelete}
-        className=" bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600">
+        className=" bg-brandYellow px-4 py-2 rounded-lg shadow-md hover:bg-hoverColor">
         Delete Group
       </button>
     </div>
@@ -177,7 +177,7 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="bg-white text-violet-500 hover:bg-violet-100 py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
+      <DialogTrigger className="bg-brandYellow hover:bg-hoverColor py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
         Create Tab
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
@@ -226,7 +226,7 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              className="bg-brandYellow py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brandYellow"
             >
               Save Tab
             </button>
