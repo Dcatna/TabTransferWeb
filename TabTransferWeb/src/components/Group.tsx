@@ -46,17 +46,19 @@ const Group = () => {
 
   const handleRestore = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-
-    if (!listData || listData.length === 0) {
-      alert("No tabs available to restore");
-      return;
-    }
-    listData?.forEach((tab, index) => {
-      setTimeout(() => {
-        window.open(tab.url, "_blank");
-      }, index * 300);
+    console.log(listData, "LISTDATA");
+  
+    listData?.forEach((tab) => {
+      // Open immediately in response to user action (avoids popup blockers)
+      const newTab = window.open("", "_blank");
+  
+      if (newTab) {
+        newTab.location.href = tab.url; // Set URL only if popup is allowed
+      } else {
+        console.error("Popup blocked!");
+      }
     });
-  }
+  };
   return (
 <div className="min-h-screen bg-gray-100 p-4 w-full">
   <button
