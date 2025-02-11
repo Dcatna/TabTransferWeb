@@ -21,7 +21,7 @@ import {
 import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { cn } from "@/lib/utils";
-import { HomeIcon, InfoIcon, LogOutIcon, LucideIcon, Plus } from "lucide-react";
+import { InfoIcon, ListIcon, LogOutIcon, LucideIcon, Plus } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -85,7 +85,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       <SidebarMenu>
       {lists.map((list, index) => (
           <Link to={`group/${list.id}`} state={list} className="border border-brandYellow rounded-md hover:bg-hoverColor">
-            <SidebarItem key={index} icon={HomeIcon} name={list.group_name}></SidebarItem>
+            <SidebarItem key={index} icon={ListIcon} name={list.group_name}></SidebarItem>
           </Link>
         ))}
       </SidebarMenu>
