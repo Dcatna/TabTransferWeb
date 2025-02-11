@@ -43,13 +43,16 @@ const Group = () => {
     refreshLists()
     navigate("/home")
   }
-  
+
   const handleRestore = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
     listData?.forEach((tab) => {
       window.open(tab.url, "_blank");
-  })
+      
+    })
   }
+
   return (
 <div className="min-h-screen bg-gray-100 p-4 w-full">
   <button
