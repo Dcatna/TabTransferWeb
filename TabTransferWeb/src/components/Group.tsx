@@ -46,7 +46,7 @@ const Group = () => {
 
   const handleRestore = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-
+    console.log(listData, "LISTDATA");
     listData?.forEach((tab) => {
       window.open(tab.url, "_blank");
       
