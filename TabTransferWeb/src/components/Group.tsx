@@ -46,13 +46,17 @@ const Group = () => {
 
   const handleRestore = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    console.log(listData, "LISTDATA");
-    listData?.forEach((tab) => {
-      window.open(tab.url, "_blank");
-      
-    })
-  }
 
+    if (!listData || listData.length === 0) {
+      alert("No tabs available to restore");
+      return;
+    }
+    listData?.forEach((tab, index) => {
+      setTimeout(() => {
+        window.open(tab.url, "_blank");
+      }, index * 300);
+    });
+  }
   return (
 <div className="min-h-screen bg-gray-100 p-4 w-full">
   <button
