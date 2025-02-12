@@ -121,8 +121,8 @@ export async function InsertGroupItemByName(group_name : string, user_id: string
     return true
 }
 
-export async function DeleteGroupItemByName(group_name: string, user_id: string, url: string) {
-    const res = await supabase.from("GroupItems").delete().eq("group_name", group_name).eq("user_id", user_id).eq("url", url)
+export async function DeleteGroupItemByName(group_name: string, user_id: string, url: string, tab_id : number) {
+    const res = await supabase.from("GroupItems").delete().eq("group_name", group_name).eq("user_id", user_id).eq("url", url).eq("id", tab_id)
     if (res.error) {
         return false
     }

@@ -29,8 +29,8 @@ const Group = () => {
     setListData(data);
   };
 
-  async function RemoveFromList(url: string){
-    const res = await DeleteGroupItemByName(list.group_name, user!.id, url )
+  async function RemoveFromList(tab: GroupResponse){
+    const res = await DeleteGroupItemByName(tab.group_name, user!.id, tab.url, tab.id )
     if (!res) {
       alert("Failed to create tab list. Please try again.");
       return;
@@ -61,7 +61,7 @@ const Group = () => {
     });
   };
   return (
-<div className="min-h-screen bg-gray-100 p-4 w-full">
+<div className="min-h-screen bg-white p-4 w-full">
   <button
     onClick={() => navigate("/home")}          
     className="text-blue-600 font-bold"      
@@ -111,7 +111,7 @@ const Group = () => {
           
           <button
             className="text-red-500 hover:underline flex-shrink-0"
-            onClick={() => RemoveFromList(tab.url)}
+            onClick={() => RemoveFromList(tab)}
           >
             Remove Tab
           </button>
