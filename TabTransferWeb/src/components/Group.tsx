@@ -61,7 +61,7 @@ const Group = () => {
     });
   };
   return (
-<div className="min-h-screen bg-gray-100 p-4 w-full">
+<div className="min-h-screen bg-gray-100 p-4 w-full overflow-x-auto">
   <button
     onClick={() => navigate("/home")}          
     className="text-blue-600 font-bold"      
@@ -91,7 +91,7 @@ const Group = () => {
     </div>
   </div>
 
-  <div className="mt-6">
+  <div className="mt-6 ">
     <h2 className="text-xl font-semibold mb-4">Tabs</h2>
     {listData && listData.length > 0 ? (
       <ul className="space-y-4">
