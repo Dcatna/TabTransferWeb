@@ -8,11 +8,10 @@ interface TabCardProps {
 
 const TabCard = ({ tabs, onDelete }: TabCardProps) => {
 
-  function handleDelete() {
-    tabs.forEach(async tab => {
-      await DeleteSavedBrowserById(tab.id, tab.user_id, tab.url, tab.created_at)
-      
-    })
+  async function handleDelete() {
+    await Promise.all(tabs.map(tab => DeleteSavedBrowserById(tab.id, tab.user_id, tab.url, tab.created_at)))
+
+    
     onDelete()
 
   }

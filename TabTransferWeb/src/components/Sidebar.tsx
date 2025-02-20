@@ -21,7 +21,7 @@ import {
 import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { cn } from "@/lib/utils";
-import { InfoIcon, ListIcon, LogOutIcon, LucideIcon, Plus } from "lucide-react";
+import { InfoIcon, ListIcon, LogIn, LogOutIcon, LucideIcon, Plus } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -60,6 +60,8 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const lists = useUserStore((state) => state.lists)
   const navigate = useNavigate()
   const signOutFunction = useUserStore((state) => state.signOut)
+  const user = useUserStore((state) => state.userData?.user)
+
 
   async function handleSignout() {
     await signOutFunction()
@@ -74,11 +76,17 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       variant="sidebar"
       className="max-h-screen overflow-hidden border-r border-gray-300 bg-gray-100"
     >
-
+      {user !== undefined ? 
       <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
         <SidebarItem name="Signout" icon={LogOutIcon} className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={handleSignout}/>
         <CreateTabList />
       </SidebarHeader>
+      : 
+      <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
+        <SidebarItem name="Signin" icon={LogIn} className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={() => navigate("/signin")}/>
+      </SidebarHeader>
+      }
+      
  
       <SidebarContent className=" space-y-4">
       <SidebarGroup>
@@ -111,6 +119,19 @@ const AboutSection = () => {
         <p>Tab Transfer is a web application designed to help users easily transfer tabs between their browsers.</p>
         <p>Users can create groups, add tabs, and save their lists for easy access.</p>
         <p>Users should also download the chrome extension TabTransfer to be able to save and re-open their browser state with ease.</p>
+        <br/>
+        <p className="font-bold">How To Use:</p>
+        <p>Users can create tab groups by clicking Create Tab list. The idea for this is that you add common tabs to this list: Work, Content...</p>
+        <p>Then you can click the restore button to quickly open them all up.</p>
+        <p className="font-bold">If The Restore button is not working you must go to: </p>
+        <p>chrome://settings/content/siteDetails?site=https://www.tabtransfer.org/</p>
+        <p>And allow popups from this site. There is no way around this it is just common browser security.</p>
+        <br/>
+        <p className="font-bold">Chrome extension:</p>
+        <p>The extension is for saving browser states (so all open tabs in your browser) Allowing you to save and restore tabs across computers and different browsers.</p>
+        <p>To do this you click "Save Tabs". These saved tabs will show up on the home page of the website where you can manage them</p>
+        <p>On the extension you can also click "Restore Recent Tabs" which will restore the most recently saved session.</p>
+        <p>You can also access your groups, so you dont have to go to the website to open them</p>
         <br/>
         <p className="font-bold">About Creator:</p>
         <p>Creator is a college student studying Computer Science and Mathematics at Stevens Institute of Technology.</p>

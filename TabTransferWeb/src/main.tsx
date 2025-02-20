@@ -7,6 +7,7 @@ import Home from './components/Home.tsx'
 import Signin from './components/Signin.tsx'
 import Group from './components/Group.tsx'
 import Signup from './components/Signup.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
 
 const router = createBrowserRouter([
   {
@@ -17,8 +18,8 @@ const router = createBrowserRouter([
       { path: "/", element: <Signin /> },
       { path: "/signin", element: <Signin /> },
       { path: "/signup", element: <Signup />},
-      { path: "/home", element: <Home /> },
-      {path: "/group/:id", element: <Group /> },
+      { path: "/home", element:<ProtectedRoute><Home /></ProtectedRoute>  },
+      {path: "/group/:id", element: <ProtectedRoute><Group /></ProtectedRoute> },
     ]
 
   }
