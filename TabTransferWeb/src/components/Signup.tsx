@@ -100,7 +100,7 @@ async function submitForm (formData : IFormInput) {
 
           <button
             onClick={errors.password || errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2 text-white bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
+            className={`w-full py-2 text-black bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
@@ -108,13 +108,8 @@ async function submitForm (formData : IFormInput) {
             Create Account
           </button>
         </form>
-
-        <p className="text-gray-500 text-sm text-center mt-4">
-          By creating an account in, you agree to our terms and conditions 😉
-        </p>
-
         <div className="text-center mt-6">
-          <p className="text-gray-600">Already have an account?</p>
+          <p className="text-black">Already have an account?</p>
           <Link
             to="/signin"
             className="text-brandYellow hover:underline font-medium"

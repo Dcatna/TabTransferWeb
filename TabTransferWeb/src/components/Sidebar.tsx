@@ -128,13 +128,10 @@ const AboutSection = () => {
         <p>And allow popups from this site. There is no way around this it is just common browser security.</p>
         <br/>
         <p className="font-bold">Chrome extension:</p>
-        <p>The extension is for saving browser states (so all open tabs in your browser) Allowing you to save and restore tabs across computers and different browsers.</p>
+        <p>The extension is for saving browser states (so saving all open tabs on your browser) Allowing you to save and restore tabs across computers and different browsers.</p>
         <p>To do this you click "Save Tabs". These saved tabs will show up on the home page of the website where you can manage them</p>
         <p>On the extension you can also click "Restore Recent Tabs" which will restore the most recently saved session.</p>
         <p>You can also access your groups, so you dont have to go to the website to open them</p>
-        <br/>
-        <p className="font-bold">About Creator:</p>
-        <p>Creator is a college student studying Computer Science and Mathematics at Stevens Institute of Technology.</p>
         </DialogDescription>
       </DialogContent>
     </Dialog>

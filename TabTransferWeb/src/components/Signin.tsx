@@ -112,13 +112,8 @@ async function submitForm (formData : IFormInput) {
             Login
           </button>
         </form>
-
-        <p className="text-gray-500 text-sm text-center mt-4">
-          By logging in, you agree to our terms and conditions 😉
-        </p>
-
         <div className="text-center mt-6">
-          <p className="text-gray-600">Don’t have an account yet?</p>
+          <p className="text-black">Don’t have an account yet?</p>
           <Link
             to="/signup"
             className="text-brandYellow hover:underline font-medium"
