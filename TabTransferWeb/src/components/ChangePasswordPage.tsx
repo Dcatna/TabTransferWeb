@@ -22,7 +22,6 @@ const ChangePasswordPage = () => {
         } else {
             setToken(accessToken)
             setValidToken(true)
-            signOut()
         }
     }, [signOut])
 
