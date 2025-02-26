@@ -1,4 +1,5 @@
 import { supabase } from "@/data/supabaseclient"
+import { useUserStore } from "@/data/userstore"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -7,7 +8,7 @@ const ChangePasswordPage = () => {
     const [validToken, setValidToken] = useState<boolean>(false)
     const [token, setToken] = useState<string | null>(null)
     const [errorMsg, setErrorMsg] = useState<string>("")
-
+    const signOut = useUserStore((state) => state.signOut)
     const navigator = useNavigate()
 
     useEffect(() => {
@@ -20,8 +21,9 @@ const ChangePasswordPage = () => {
         } else {
             setToken(accessToken)
             setValidToken(true)
+            signOut()
         }
-    }, [])
+    }, [signOut])
 
 
     async function handleSubmit() {
