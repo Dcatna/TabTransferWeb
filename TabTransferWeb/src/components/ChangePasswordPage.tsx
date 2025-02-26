@@ -50,13 +50,12 @@ const ChangePasswordPage = () => {
 
             <div className="flex flex-row">
                 <input type="text" placeholder="New Password" onChange={(e) => SetNewPassword(e.target.value)} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/>
-                <Button onClick={handleSubmit}>Reset Password</Button>
+                <Button className="ml-2" onClick={handleSubmit}>Reset Password</Button>
             </div>
 
         </Card> : 
-            <Card>
-                <p>Invaid or Expired Token</p> 
-            </Card>}
+
+                <p>Invaid or Expired Token</p> }
     </div>
   )
 
