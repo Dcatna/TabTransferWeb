@@ -13,6 +13,7 @@ const ChangePasswordPage = () => {
     useEffect(() => {
         const hashParams = new URLSearchParams(window.location.hash.substring(1)); // Removes "#"
         const accessToken = hashParams.get("access_token");
+        console.log(accessToken)
         if (!accessToken) {
             setErrorMsg("Invalid token or Expired Link")
             
@@ -20,7 +21,7 @@ const ChangePasswordPage = () => {
             setToken(accessToken)
             setValidToken(true)
         }
-    }, [token])
+    }, [])
 
 
     async function handleSubmit() {
@@ -37,7 +38,7 @@ const ChangePasswordPage = () => {
 
     <div className=" w-full flex flex-col items-center justify-center">
          {errorMsg && <p>{errorMsg}</p>}
-        { validToken ? 
+        { validToken && token ? 
         <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
             <div className="text-center">
                 <h1 className="text-2xl font-bold text-brandYellow mb-2">Sign In!</h1>
