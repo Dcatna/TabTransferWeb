@@ -151,7 +151,7 @@ function ModeToggle() {
 const AboutSection = () => {
   return (
     <Dialog >
-      <DialogTrigger className=" bg-backgroud text-yellow-600 hover:bg-violet-100  rounded-lg shadow-md" >
+      <DialogTrigger className=" bg-backgroud   rounded-lg shadow-md" >
       <SidebarItem name={"About This App"} icon={InfoIcon} />
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg  bg-card shadow-lg">
@@ -217,7 +217,7 @@ const CreateTabList = () => {
       <DialogTrigger className=" bg-backgroud text-foreground rounded-lg shadow-md" onClick={() => setOpen(true)}>
         <SidebarItem name={"Create Tab List"} icon={Plus} className="rounded-lg"/>
       </DialogTrigger>
-      <DialogContent className="max-w-lg p-6 rounded-lg  bg-backgroud shadow-lg">
+      <DialogContent className="max-w-lg p-6 rounded-lg  bg-backgroud shadow-lg bg-card">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold ">
             Create New Tab List
