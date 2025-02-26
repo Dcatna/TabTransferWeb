@@ -71,9 +71,9 @@ async function submitForm (formData : IFormInput) {
   return (
 
     <div className=" w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-brandYellow mb-2">Sign Up!</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Sign Up!</h1>
           <p className="text-gray-600 mb-4">Please enter your email and password</p>
         </div>
 
@@ -100,7 +100,7 @@ async function submitForm (formData : IFormInput) {
 
           <button
             onClick={errors.password || errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2 text-black bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
+            className={`w-full py-2 text-black  bg-primary hover:bg-hoverColor rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
@@ -112,7 +112,7 @@ async function submitForm (formData : IFormInput) {
           <p className="text-black">Already have an account?</p>
           <Link
             to="/signin"
-            className="text-brandYellow hover:underline font-medium"
+            className="text-foreground hover:underline font-medium"
           >
             Sign in
           </Link>

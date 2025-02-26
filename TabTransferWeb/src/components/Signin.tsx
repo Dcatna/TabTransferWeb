@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
 import { useUserStore } from '@/data/userstore';
+import { Button } from './ui/button';
 
 export interface IFormInput {
     email: string;
@@ -75,9 +76,9 @@ async function submitForm (formData : IFormInput) {
   return (
 
     <div className=" w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-brandYellow mb-2">Sign In!</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Sign In!</h1>
           <p className="text-gray-600 mb-4">Please enter your email and password</p>
         </div>
 
@@ -102,28 +103,28 @@ async function submitForm (formData : IFormInput) {
             <p className="text-red-500 text-sm mt-1">{errors.password?.message}</p>
           </div>
 
-          <button
+          <Button
             onClick={errors.password || errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2 bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
+            className={`w-full py-2 rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
           >
             Login
-          </button>
+          </Button>
         </form>
         <div className="text-center mt-6 flex justify-between">
         
           <Link
             to="/forgotpassword"
-            className="text-brandYellow hover:underline font-medium"
+            className="text-foreground hover:underline font-medium"
           >
             Forgot Password
           </Link>
           
           <Link
             to="/signup"
-            className="text-brandYellow hover:underline font-medium"
+            className="text-foreground hover:underline font-medium"
           >
             Create Account
           </Link>

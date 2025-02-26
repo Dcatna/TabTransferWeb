@@ -41,9 +41,9 @@ const ChangePasswordPage = () => {
     <div className=" w-full flex flex-col items-center justify-center">
          {errorMsg && <p>{errorMsg}</p>}
         { validToken && token ? 
-        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
             <div className="text-center">
-                <h1 className="text-2xl font-bold text-brandYellow mb-2">Sign In!</h1>
+                <h1 className="text-2xl font-bold text-foreground mb-2">Reset Password</h1>
                 <p className="text-gray-600 mb-4">Please enter your new password</p>
             </div>
 

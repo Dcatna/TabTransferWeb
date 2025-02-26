@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DialogHeader } from "./ui/dialog";
 import type { Group } from "@/data/Types";
+import { Button } from "./ui/button";
 
 const Group = () => {
   const location = useLocation();
@@ -61,7 +62,7 @@ const Group = () => {
     });
   };
   return (
-<div className="min-h-screen bg-white p-4 w-full overflow-x-auto">
+<div className="min-h-screen  bg-backgroud p-4 w-full overflow-x-auto">
   <button
     onClick={() => navigate("/home")}          
     className="text-blue-600 font-bold"      
@@ -69,22 +70,24 @@ const Group = () => {
     ← Back 
   </button>
 
-  <div className="bg-white p-4 shadow-md rounded-lg relative">
+  <div className="  p-4 shadow-md rounded-lg relative bg-card">
     <h1 className="text-2xl font-bold">{list.group_name}</h1>
-    <p className="text-gray-600 mt-2">{list.description}</p>
+    <p className="text-card-forground mt-2">{list.description}</p>
 
     <div className="absolute top-4 right-4">
-      <button
+      <Button
         onClick={handleRestore}
-        className=" bg-brandYellow px-4 py-2 rounded-lg shadow-md hover:bg-hoverColor mr-1"
+        className=" px-4 py-2 rounded-lg shadow-md  mr-1"
+        variant={"secondary"}
       >
         Restore
-      </button>
-      <button 
+      </Button>
+      <Button 
         onClick={handleDelete}
-        className=" bg-brandYellow px-4 py-2 rounded-lg shadow-md hover:bg-hoverColor">
+        className=" px-4 py-2 rounded-lg shadow-md"
+        variant={"destructive"}>
         Delete Group
-      </button>
+      </Button>
     </div>
     <div className="mt-6">
       <AddTabDialog group_name={list.group_name} refreshList={refreshListData} />
@@ -98,7 +101,7 @@ const Group = () => {
       {listData.map((tab, index) => (
         <li
           key={index}
-          className="bg-white p-4 shadow-md rounded-lg flex items-center space-x-4"
+          className=" bg-card p-4 shadow-md rounded-lg flex items-center space-x-4"
         >
           <img src={tab.favicon_url} alt="" className="w-10 h-10 flex-shrink-0" />
           
@@ -107,7 +110,7 @@ const Group = () => {
           <a href={tab.url}
             target="_blank"
             rel="noopener noreferrer" 
-            className="flex-1 truncate text-gray-500">{tab.url} </a>
+            className="flex-1 truncate text-card-foreground">{tab.url} </a>
           
           <button
             className="text-red-500 hover:underline flex-shrink-0"
@@ -187,10 +190,10 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="bg-brandYellow hover:bg-hoverColor py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
+      <DialogTrigger className=" bg-primary hover:bg-hoverColor py-2 px-4 rounded-lg shadow-md" onClick={() => setOpen(true)}>
         Create Tab
       </DialogTrigger>
-      <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
+      <DialogContent className="max-w-lg p-6 rounded-lg  bg-backgroud shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold text-gray-800">
             Create New Tab List
@@ -236,7 +239,7 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-brandYellow py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brandYellow"
+              className=" bg-primary py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brandYellow"
             >
               Save Tab
             </button>

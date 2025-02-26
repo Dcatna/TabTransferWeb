@@ -42,9 +42,9 @@ const ForgotPassword = () => {
   return (
 
     <div className=" w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-brandYellow mb-2">Reset Password</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Reset Password</h1>
           <p className="text-gray-600 mb-4">Please enter your email</p>
         </div>
 
@@ -60,7 +60,7 @@ const ForgotPassword = () => {
           </div>
           <button
             onClick={ errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2 bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
+            className={`w-full py-2  bg-primary hover:bg-hoverColor rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
@@ -71,7 +71,7 @@ const ForgotPassword = () => {
         <div className="text-center mt-6">
           <Link
             to="/signin"
-            className="text-brandYellow hover:underline font-medium"
+            className="text-foreground hover:underline font-medium"
           >
             Back to Sign In
           </Link>

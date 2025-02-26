@@ -59,7 +59,7 @@ const Home = () => {
         </div>
       ) : (
         <div className="flex flex-grow items-center justify-center w-full">
-          <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md text-center">
+          <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md text-center">
             <p>No tabs found.</p>
             <p>Try saving browsers states with the extension TabTransfer</p>
           </div>

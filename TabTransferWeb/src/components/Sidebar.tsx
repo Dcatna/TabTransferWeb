@@ -21,10 +21,13 @@ import {
 import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { cn } from "@/lib/utils";
-import { InfoIcon, ListIcon, LogIn, LogOutIcon, LucideIcon, Plus } from "lucide-react";
+import { ComputerIcon, InfoIcon, ListIcon, LogIn, LogOutIcon, LucideIcon, Moon, Plus, Sun } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTheme } from "./Theme";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { Button } from "./ui/button";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -37,7 +40,7 @@ export function SidebarItem(props: SidebarProps) {
   return (
     <SidebarMenuItem className={cn( props.className,  
       "fade-in fade-out transition-all duration-350 ease-in-out",
-      "text-md line-clamp-1 overflow-ellipsis"
+      "text-md line-clamp-1 overflow-ellipsis bg-card text-card-foreground"
     )}>
       <SidebarMenuButton
         variant={props.selected ? "outline" : "default"}
@@ -74,47 +77,77 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       {...props}
       collapsible="icon"
       variant="sidebar"
-      className="max-h-screen overflow-hidden border-r border-gray-300 bg-gray-100"
+      className="max-h-screen overflow-hidden border-r border-gray-300 "
     >
       {user !== undefined ? 
-      <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
-        <SidebarItem name="Signout" icon={LogOutIcon} className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={handleSignout}/>
+      <SidebarHeader className="text-lg font-semibold flex flex-col">
+        
+
+          <ModeToggle />
+          <SidebarItem name="Signout" icon={LogOutIcon} className="   rounded-lg shadow-md" onClick={handleSignout}/>
         <CreateTabList />
       </SidebarHeader>
       : 
-      <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
-        <SidebarItem name="Signin" icon={LogIn} className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={() => navigate("/signin")}/>
+      <SidebarHeader className=" ">
+        <SidebarItem name="Signin" icon={LogIn} className=" bg-backgroud text-foreground  rounded-lg shadow-md" onClick={() => navigate("/signin")}/>
+        <ModeToggle />
       </SidebarHeader>
       }
-      
- 
       <SidebarContent className=" space-y-4">
       <SidebarGroup>
+      
       <SidebarMenu>
       {lists.map((list, index) => (
-          <Link to={`group/${list.id}`} state={list} className="border border-brandYellow rounded-md hover:bg-hoverColor">
-            <SidebarItem key={index} icon={ListIcon} name={list.group_name}></SidebarItem>
+          <Link to={`group/${list.id}`} state={list} className="border border-background rounded-lg">
+            <SidebarItem key={index} icon={ListIcon} name={list.group_name} className="rounded-lg"></SidebarItem>
           </Link>
         ))}
       </SidebarMenu>
       </SidebarGroup>
       </SidebarContent>
       
-      <SidebarFooter className="p-4 bg-gray-200 text-sm text-gray-600 text-center">
+      <SidebarFooter className="p-4 bg-background text-sm text-gray-600 text-center">
         <AboutSection/>
       </SidebarFooter>
     </Sidebar>
   );
 };
 
+function ModeToggle() {
+  const { setTheme, theme } = useTheme();
+  return (
+    <div className="z-50">
+    <DropdownMenu>
+      <DropdownMenuTrigger className="w-full h-full justify-start">
+        <SidebarItem name="Toggle Theme" icon={theme === "system" ? ComputerIcon :  theme === "dark" ? Moon : Sun} />
+      </DropdownMenuTrigger>
+      
+      <DropdownMenuContent align="end"> 
+        <div className="bg-secondary z-50 p-2 pe-2 cursor-pointer">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+    </div>
+  );
+}
+
 const AboutSection = () => {
   return (
     <Dialog >
-      <DialogTrigger className="bg-white text-yellow-600 hover:bg-violet-100  rounded-lg shadow-md" >
+      <DialogTrigger className=" bg-backgroud text-yellow-600 hover:bg-violet-100  rounded-lg shadow-md" >
       <SidebarItem name={"About This App"} icon={InfoIcon} />
       </DialogTrigger>
-      <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
-        <DialogDescription className="text-sm text-black ">
+      <DialogContent className="max-w-lg p-6 rounded-lg  bg-card shadow-lg">
+        <DialogDescription className="text-sm text-card-foreground ">
         <p className="font-bold">About this App:</p>
         <p>Tab Transfer is a web application designed to help users easily transfer tabs between their browsers.</p>
         <p>Users can create groups, add tabs, and save their lists for easy access.</p>
@@ -173,10 +206,10 @@ const CreateTabList = () => {
     
     <Dialog open={open} onOpenChange={setOpen}>
       
-      <DialogTrigger className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={() => setOpen(true)}>
-        <SidebarItem name={"Create Tab List"} icon={Plus} />
+      <DialogTrigger className=" bg-backgroud text-foreground hover:bg-violet-100 rounded-lg shadow-md" onClick={() => setOpen(true)}>
+        <SidebarItem name={"Create Tab List"} icon={Plus} className="rounded-lg"/>
       </DialogTrigger>
-      <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
+      <DialogContent className="max-w-lg p-6 rounded-lg  bg-backgroud shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold text-gray-800">
             Create New Tab List
@@ -222,7 +255,7 @@ const CreateTabList = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-brandYellow  py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              className=" bg-primary  py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
             >
               Save Tab List
             </button>
