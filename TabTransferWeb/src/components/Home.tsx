@@ -48,7 +48,7 @@ const Home = () => {
     }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full overflow-x-auto">
       {groupedTabs?.length !== 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 grid-flow-row-dense auto-rows-[minmax(100px, auto)]">
           {groupedTabs?.map((group, index) => (
