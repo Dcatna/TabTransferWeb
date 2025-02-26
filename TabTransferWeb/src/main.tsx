@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       { path: "/home", element:<ProtectedRoute><Home /></ProtectedRoute>  },
       { path: "/group/:id", element: <ProtectedRoute><Group /></ProtectedRoute> },
       { path: "/forgotpassword", element: <ForgotPassword /> },
-      { path: "/resetpassword:token", element: <ChangePasswordPage /> },
+      { path: "/resetpassword/:token", element: <ChangePasswordPage /> },
 
     ]
   }
