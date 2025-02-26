@@ -1,22 +1,23 @@
 import { supabase } from "@/data/supabaseclient"
 import { useEffect, useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const ChangePasswordPage = () => {
     const [newPassword, SetNewPassword] = useState<string>("")
     const [validToken, setValidToken] = useState<boolean>(false)
-    const [searchParams] = useSearchParams()
+    const [token, setToken] = useState<string | null>(null)
     const [errorMsg, setErrorMsg] = useState<string>("")
 
     const navigator = useNavigate()
 
-    const token = searchParams.get("token")
-
     useEffect(() => {
-        if (!token) {
+        const hashParams = new URLSearchParams(window.location.hash.substring(1)); // Remove "#"
+        const accessToken = hashParams.get("access_token");
+        if (!accessToken) {
             setErrorMsg("Invalid token or Expired Link")
             
         } else {
+            setToken(accessToken)
             setValidToken(true)
         }
     }, [token])
