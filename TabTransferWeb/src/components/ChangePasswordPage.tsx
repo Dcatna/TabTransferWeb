@@ -11,7 +11,7 @@ const ChangePasswordPage = () => {
     const navigator = useNavigate()
 
     useEffect(() => {
-        const hashParams = new URLSearchParams(window.location.hash.substring(1)); // Remove "#"
+        const hashParams = new URLSearchParams(window.location.hash.substring(1)); // Removes "#"
         const accessToken = hashParams.get("access_token");
         if (!accessToken) {
             setErrorMsg("Invalid token or Expired Link")
