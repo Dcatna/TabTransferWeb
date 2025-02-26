@@ -28,6 +28,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "./Theme";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -80,7 +82,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       className="max-h-screen overflow-hidden border-r border-gray-300 "
     >
       {user !== undefined ? 
-      <SidebarHeader className="text-lg font-semibold flex flex-col">
+      <SidebarHeader className="">
         
 
           <ModeToggle />
@@ -88,7 +90,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         <CreateTabList />
       </SidebarHeader>
       : 
-      <SidebarHeader className=" ">
+      <SidebarHeader className="">
         <SidebarItem name="Signin" icon={LogIn} className=" bg-backgroud text-foreground  rounded-lg shadow-md" onClick={() => navigate("/signin")}/>
         <ModeToggle />
       </SidebarHeader>
@@ -123,17 +125,23 @@ function ModeToggle() {
       </DropdownMenuTrigger>
       
       <DropdownMenuContent align="end"> 
-        <div className="bg-secondary z-50 p-2 pe-2 cursor-pointer">
+        <Card className="bg-secondary z-50 p-2cursor-pointer text-start">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+          <Button variant="ghost" className="w-full">
+            Light
+          </Button>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+          <Button variant="ghost" className="w-full"> 
+            Dark
+          </Button>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
+          <Button variant="ghost" className="w-full">
+            System
+          </Button>
         </DropdownMenuItem>
-        </div>
+        </Card>
       </DropdownMenuContent>
     </DropdownMenu>
     </div>
