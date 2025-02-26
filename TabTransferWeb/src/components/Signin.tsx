@@ -112,8 +112,15 @@ async function submitForm (formData : IFormInput) {
             Login
           </button>
         </form>
-        <div className="text-center mt-6">
-          <p className="text-black">Don’t have an account yet?</p>
+        <div className="text-center mt-6 flex justify-between">
+        
+          <Link
+            to="/forgotpassword"
+            className="text-brandYellow hover:underline font-medium"
+          >
+            Forgot Password
+          </Link>
+          
           <Link
             to="/signup"
             className="text-brandYellow hover:underline font-medium"
