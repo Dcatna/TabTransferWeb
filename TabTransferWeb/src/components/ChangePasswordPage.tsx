@@ -2,6 +2,8 @@ import { supabase } from "@/data/supabaseclient"
 import { useUserStore } from "@/data/userstore"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Card } from "./ui/card"
+import { Button } from "./ui/button"
 
 
 const ChangePasswordPage = () => {
@@ -37,24 +39,23 @@ const ChangePasswordPage = () => {
     }
 
   return (
-
-    <div className=" w-full flex flex-col items-center justify-center">
-         {errorMsg && <p>{errorMsg}</p>}
+    <Card className=" w-full flex flex-col items-center justify-center">
+        {errorMsg && <p>{errorMsg}</p>}
         { validToken && token ? 
         <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
             <div className="text-center">
-                <h1 className="text-2xl font-bold text-foreground mb-2">Reset Password</h1>
-                <p className="text-gray-600 mb-4">Please enter your new password</p>
+                <h1 className="text-2xl font-bold text-card-foreground mb-2">Reset Password</h1>
+                <p className="text-card-foreground mb-4">Please enter your new password</p>
             </div>
 
             <div>
                 <input type="text" placeholder="New Password" onChange={(e) => SetNewPassword(e.target.value)} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/>
-                <button onClick={handleSubmit}>Reset Password</button>
+                <Button onClick={handleSubmit}>Reset Password</Button>
             </div>
 
         </div> : 
             <p>Invaid or Expired Token</p> }
-    </div>
+    </Card>
   )
 
 }
