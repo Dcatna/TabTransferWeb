@@ -28,7 +28,7 @@ const ForgotPassword = () => {
     
     async function submitForm (formData : IFormInput2) {
         console.log("SUBMITTING FORM")
-        const res = await supabase.auth.resetPasswordForEmail(formData.email, {redirectTo: "https://tabtransfer.org/passwordreset"})
+        const res = await supabase.auth.resetPasswordForEmail(formData.email, {redirectTo: "https://tabtransfer.org/resetpassword"})
         console.log(res)
         if (res.error) {
             alert("Error Resetting Password")
