@@ -27,6 +27,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "./Theme";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { Input } from "./ui/input";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -105,7 +106,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       </SidebarGroup>
       </SidebarContent>
       
-      <SidebarFooter className="p-4 bg-background text-sm text-gray-600 text-center">
+      <SidebarFooter className="p-4 bg-background text-sm  text-center">
         <AboutSection/>
       </SidebarFooter>
     </Sidebar>
@@ -225,7 +226,7 @@ const CreateTabList = () => {
             >
               List Name
             </label>
-            <input
+            <Input
               type="text"
               id="listName"
               value={listName}

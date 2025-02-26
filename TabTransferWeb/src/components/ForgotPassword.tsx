@@ -5,6 +5,9 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 import { supabase } from '@/data/supabaseclient';
+import { Card } from './ui/card';
+import { Button } from './ui/button';
+
 export interface IFormInput2 {
     email: string;
   }
@@ -42,10 +45,10 @@ const ForgotPassword = () => {
   return (
 
     <div className=" w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
+      <Card className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground mb-2">Reset Password</h1>
-          <p className="text-gray-600 mb-4">Please enter your email</p>
+          <p className=" mb-4">Please enter your email</p>
         </div>
 
         <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
@@ -53,20 +56,20 @@ const ForgotPassword = () => {
             <input
               type="text"
               placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandYellow"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               {...register("email")}
             />
             <p className="text-red-500 text-sm mt-1">{errors.email?.message}</p>
           </div>
-          <button
+          <Button
             onClick={ errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2  bg-primary hover:bg-hoverColor rounded-md transition-all duration-300 ${
+            className={`w-full py-2 rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
           >
             Reset My Password
-          </button>
+          </Button>
         </form>
         <div className="text-center mt-6">
           <Link
@@ -76,7 +79,7 @@ const ForgotPassword = () => {
             Back to Sign In
           </Link>
         </div>
-      </div>
+      </Card>
     </div>
   )
 }
