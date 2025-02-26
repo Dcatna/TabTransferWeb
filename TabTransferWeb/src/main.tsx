@@ -10,12 +10,15 @@ import Signup from './components/Signup.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import ForgotPassword from './components/ForgotPassword.tsx'
 import ChangePasswordPage from './components/ChangePasswordPage.tsx'
+import ErrorPage from './components/ErrorPage.tsx'
+import { ThemeProvider } from './components/Theme.tsx'
 
 const router = createBrowserRouter([
   {
 
     path: "/",
     element: <App/>,
+    errorElement: <ThemeProvider><ErrorPage/></ThemeProvider>,
     children: [
       { path: "/", element: <Signin /> },
       { path: "/signin", element: <Signin /> },
