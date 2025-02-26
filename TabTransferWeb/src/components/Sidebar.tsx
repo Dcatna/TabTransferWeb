@@ -27,9 +27,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "./Theme";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import { Textarea } from "./ui/textarea";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -214,15 +214,15 @@ const CreateTabList = () => {
     
     <Dialog open={open} onOpenChange={setOpen}>
       
-      <DialogTrigger className=" bg-backgroud text-foreground hover:bg-violet-100 rounded-lg shadow-md" onClick={() => setOpen(true)}>
+      <DialogTrigger className=" bg-backgroud text-foreground rounded-lg shadow-md" onClick={() => setOpen(true)}>
         <SidebarItem name={"Create Tab List"} icon={Plus} className="rounded-lg"/>
       </DialogTrigger>
       <DialogContent className="max-w-lg p-6 rounded-lg  bg-backgroud shadow-lg">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-gray-800">
+          <DialogTitle className="text-lg font-bold ">
             Create New Tab List
           </DialogTitle>
-          <DialogDescription className="text-sm text-gray-600">
+          <DialogDescription className="text-sm ">
             Provide details for your new tab list. You can edit or delete it later.
           </DialogDescription>
         </DialogHeader>
@@ -230,16 +230,16 @@ const CreateTabList = () => {
           <div>
             <label
               htmlFor="listName"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium "
             >
               List Name
             </label>
-            <Input
+            <input
               type="text"
               id="listName"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               placeholder="Enter a name for your tab list"
               required
             />
@@ -247,26 +247,26 @@ const CreateTabList = () => {
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium "
             >
               Description
             </label>
-            <textarea
+            <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md sm:text-sm"
               placeholder="Enter a brief description of the tab list"
               rows={4}
             />
           </div>
           <div className="flex justify-end">
-            <button
+            <Button
               type="submit"
-              className=" bg-primary  py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              className="py-2 px-4 rounded-md "
             >
               Save Tab List
-            </button>
+            </Button>
           </div>
         </form>
       </DialogContent>
