@@ -27,7 +27,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "./Theme";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { Button } from "./ui/button";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
