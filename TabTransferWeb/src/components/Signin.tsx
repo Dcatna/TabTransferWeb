@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
 import { useUserStore } from '@/data/userstore';
+import { Button } from './ui/button';
+import { Card } from './ui/card';
 
 export interface IFormInput {
     email: string;
@@ -75,10 +77,11 @@ async function submitForm (formData : IFormInput) {
   return (
 
     <div className=" w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <Card className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md">
+
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-brandYellow mb-2">Sign In!</h1>
-          <p className="text-gray-600 mb-4">Please enter your email and password</p>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Sign In!</h1>
+          <p className=" mb-4">Please enter your email and password</p>
         </div>
 
         <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
@@ -86,7 +89,7 @@ async function submitForm (formData : IFormInput) {
             <input
               type="text"
               placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandYellow"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               {...register("email")}
             />
             <p className="text-red-500 text-sm mt-1">{errors.email?.message}</p>
@@ -96,32 +99,39 @@ async function submitForm (formData : IFormInput) {
             <input
               type="password"
               placeholder="Password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandYellow"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               {...register("password")}
             />
             <p className="text-red-500 text-sm mt-1">{errors.password?.message}</p>
           </div>
 
-          <button
+          <Button
             onClick={errors.password || errors.email ? handleButtonClick : () => {}}
-            className={`w-full py-2 bg-brandYellow hover:bg-hoverColor rounded-md transition-all duration-300 ${
+            className={`w-full py-2 rounded-md transition-all duration-300 ${
               isJiggling ? "animate-shake" : ""
             }`}
             type="submit"
           >
             Login
-          </button>
+          </Button>
         </form>
-        <div className="text-center mt-6">
-          <p className="text-black">Don’t have an account yet?</p>
+        <div className="text-center mt-6 flex justify-between">
+        
+          <Link
+            to="/forgotpassword"
+            className="text-foreground hover:underline font-medium"
+          >
+            Forgot Password
+          </Link>
+          
           <Link
             to="/signup"
-            className="text-brandYellow hover:underline font-medium"
+            className="text-foreground hover:underline font-medium"
           >
             Create Account
           </Link>
         </div>
-      </div>
+      </Card>
     </div>
 
 

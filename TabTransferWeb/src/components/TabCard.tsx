@@ -1,5 +1,6 @@
 import { DeleteSavedBrowserById } from "@/data/supabaseclient";
 import { Tabs } from "../data/Types";
+import { Button } from "./ui/button";
 
 interface TabCardProps {
   tabs: Tabs[];
@@ -52,26 +53,26 @@ const TabCard = ({ tabs, onDelete }: TabCardProps) => {
   };
   
   return (
-    <div className="border border-black p-4 rounded-md shadow-md bg-gray-100 w-full max-w-[450px] flex-grow transition-all">
+    <div className="border border-black p-4 rounded-md shadow-md bg-card w-full max-w-[450px] flex-grow transition-all">
       <div
         className="cursor-pointer flex items-center justify-between p-3 rounded-md"
         role="button"
       >
         <h2 className="text-lg font-medium flex-1 truncate">Saved - {getRelativeTime(tabs[0].created_at)}</h2>
         <div className="flex-shrink-0">
-          <button
+          <Button
             onClick={restoreTabs}
-            className="bg-brandYellow  px-2 py-1 text-sm rounded hover:bg-hoverColor focus:outline-none"
+            className=" px-2 py-1 text-sm rounded focus:outline-none"
           >
             Restore All
-          </button>
-          <button onClick={() => handleDelete()} className="bg-brandYellow px-2 py-1 text-sm rounded hover:bg-hoverColor focus:outline-none ml-1">
+          </Button>
+          <Button onClick={() => handleDelete()} className="px-2 py-1 text-sm rounded focus:outline-none ml-1">
             Delete
-          </button>
+          </Button>
         </div>
     
       </div>
-      {/* Expandable Content */}
+
       <div className="h-[200px] max-h-[200px] overflow-y-auto scrollbar-thin ">
         <ul className="mt-2 space-y-2">
           {tabs.map((tab, index) => (

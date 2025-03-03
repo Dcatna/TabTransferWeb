@@ -48,7 +48,7 @@ const Home = () => {
     }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full overflow-x-auto">
       {groupedTabs?.length !== 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 grid-flow-row-dense auto-rows-[minmax(100px, auto)]">
           {groupedTabs?.map((group, index) => (
@@ -59,7 +59,7 @@ const Home = () => {
         </div>
       ) : (
         <div className="flex flex-grow items-center justify-center w-full">
-          <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md text-center">
+          <div className="w-full max-w-md p-6  bg-backgroud rounded-lg shadow-md text-center">
             <p>No tabs found.</p>
             <p>Try saving browsers states with the extension TabTransfer</p>
           </div>

@@ -21,10 +21,15 @@ import {
 import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { cn } from "@/lib/utils";
-import { InfoIcon, ListIcon, LogIn, LogOutIcon, LucideIcon, Plus } from "lucide-react";
+import { ComputerIcon, InfoIcon, ListIcon, LogIn, LogOutIcon, LucideIcon, Moon, Plus, Sun } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTheme } from "./Theme";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
+import { Textarea } from "./ui/textarea";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -37,7 +42,7 @@ export function SidebarItem(props: SidebarProps) {
   return (
     <SidebarMenuItem className={cn( props.className,  
       "fade-in fade-out transition-all duration-350 ease-in-out",
-      "text-md line-clamp-1 overflow-ellipsis"
+      "text-md line-clamp-1 overflow-ellipsis bg-card text-card-foreground"
     )}>
       <SidebarMenuButton
         variant={props.selected ? "outline" : "default"}
@@ -74,47 +79,83 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       {...props}
       collapsible="icon"
       variant="sidebar"
-      className="max-h-screen overflow-hidden border-r border-gray-300 bg-gray-100"
+      className="max-h-screen overflow-hidden border-r border-gray-300 "
     >
       {user !== undefined ? 
-      <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
-        <SidebarItem name="Signout" icon={LogOutIcon} className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={handleSignout}/>
+      <SidebarHeader className="">
+        
+
+          <ModeToggle />
+          <SidebarItem name="Signout" icon={LogOutIcon} className="   rounded-lg shadow-md" onClick={handleSignout}/>
         <CreateTabList />
       </SidebarHeader>
       : 
-      <SidebarHeader className="bg-brandYellow p-4 text-white text-lg font-semibold">
-        <SidebarItem name="Signin" icon={LogIn} className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={() => navigate("/signin")}/>
+      <SidebarHeader className="">
+        <SidebarItem name="Signin" icon={LogIn} className=" bg-backgroud text-foreground  rounded-lg shadow-md" onClick={() => navigate("/signin")}/>
+        <ModeToggle />
       </SidebarHeader>
       }
-      
- 
       <SidebarContent className=" space-y-4">
       <SidebarGroup>
+      
       <SidebarMenu>
       {lists.map((list, index) => (
-          <Link to={`group/${list.id}`} state={list} className="border border-brandYellow rounded-md hover:bg-hoverColor">
-            <SidebarItem key={index} icon={ListIcon} name={list.group_name}></SidebarItem>
+          <Link to={`group/${list.id}`} state={list} className="border border-background rounded-lg">
+            <SidebarItem key={index} icon={ListIcon} name={list.group_name} className="rounded-lg"></SidebarItem>
           </Link>
         ))}
       </SidebarMenu>
       </SidebarGroup>
       </SidebarContent>
       
-      <SidebarFooter className="p-4 bg-gray-200 text-sm text-gray-600 text-center">
+      <SidebarFooter className="p-4 bg-background text-sm  text-center">
         <AboutSection/>
       </SidebarFooter>
     </Sidebar>
   );
 };
 
+function ModeToggle() {
+  const { setTheme, theme } = useTheme();
+  return (
+    <div className="z-50">
+    <DropdownMenu>
+      <DropdownMenuTrigger className="w-full h-full justify-start">
+        <SidebarItem name="Toggle Theme" icon={theme === "system" ? ComputerIcon :  theme === "dark" ? Moon : Sun} />
+      </DropdownMenuTrigger>
+      
+      <DropdownMenuContent align="end"> 
+        <Card className="bg-secondary z-50 p-2cursor-pointer text-start">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          <Button variant="ghost" className="w-full">
+            Light
+          </Button>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <Button variant="ghost" className="w-full"> 
+            Dark
+          </Button>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          <Button variant="ghost" className="w-full">
+            System
+          </Button>
+        </DropdownMenuItem>
+        </Card>
+      </DropdownMenuContent>
+    </DropdownMenu>
+    </div>
+  );
+}
+
 const AboutSection = () => {
   return (
     <Dialog >
-      <DialogTrigger className="bg-white text-yellow-600 hover:bg-violet-100  rounded-lg shadow-md" >
+      <DialogTrigger className=" bg-backgroud   rounded-lg shadow-md" >
       <SidebarItem name={"About This App"} icon={InfoIcon} />
       </DialogTrigger>
-      <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
-        <DialogDescription className="text-sm text-black ">
+      <DialogContent className="max-w-lg p-6 rounded-lg  bg-card shadow-lg">
+        <DialogDescription className="text-sm text-card-foreground ">
         <p className="font-bold">About this App:</p>
         <p>Tab Transfer is a web application designed to help users easily transfer tabs between their browsers.</p>
         <p>Users can create groups, add tabs, and save their lists for easy access.</p>
@@ -173,15 +214,15 @@ const CreateTabList = () => {
     
     <Dialog open={open} onOpenChange={setOpen}>
       
-      <DialogTrigger className="bg-white text-brandYellow hover:bg-violet-100 rounded-lg shadow-md" onClick={() => setOpen(true)}>
-        <SidebarItem name={"Create Tab List"} icon={Plus} />
+      <DialogTrigger className=" bg-backgroud text-foreground rounded-lg shadow-md" onClick={() => setOpen(true)}>
+        <SidebarItem name={"Create Tab List"} icon={Plus} className="rounded-lg"/>
       </DialogTrigger>
-      <DialogContent className="max-w-lg p-6 rounded-lg bg-white shadow-lg">
+      <DialogContent className="max-w-lg p-6 rounded-lg  bg-backgroud shadow-lg bg-card">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-gray-800">
+          <DialogTitle className="text-lg font-bold ">
             Create New Tab List
           </DialogTitle>
-          <DialogDescription className="text-sm text-gray-600">
+          <DialogDescription className="text-sm ">
             Provide details for your new tab list. You can edit or delete it later.
           </DialogDescription>
         </DialogHeader>
@@ -189,7 +230,7 @@ const CreateTabList = () => {
           <div>
             <label
               htmlFor="listName"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium "
             >
               List Name
             </label>
@@ -198,7 +239,7 @@ const CreateTabList = () => {
               id="listName"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               placeholder="Enter a name for your tab list"
               required
             />
@@ -206,26 +247,26 @@ const CreateTabList = () => {
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium "
             >
               Description
             </label>
-            <textarea
+            <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md sm:text-sm"
               placeholder="Enter a brief description of the tab list"
               rows={4}
             />
           </div>
           <div className="flex justify-end">
-            <button
+            <Button
               type="submit"
-              className="bg-brandYellow  py-2 px-4 rounded-md hover:bg-hoverColor focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              className="py-2 px-4 rounded-md "
             >
               Save Tab List
-            </button>
+            </Button>
           </div>
         </form>
       </DialogContent>
