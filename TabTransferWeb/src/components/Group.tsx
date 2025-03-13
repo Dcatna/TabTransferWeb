@@ -62,70 +62,70 @@ const Group = () => {
     });
   };
   return (
-<div className="min-h-screen  bg-backgroud p-4 w-full overflow-x-auto">
-  <Button
-    onClick={() => navigate("/home")}          
-    className="font-bold mb-2"      
-  >          
-    ← Back 
-  </Button>
-
-  <div className="  p-4 shadow-md rounded-lg relative bg-card">
-    <h1 className="text-2xl font-bold">{list.group_name}</h1>
-    <p className="text-card-forground mt-2">{list.description}</p>
-
-    <div className="absolute top-4 right-4">
+    <div className="min-h-screen  bg-backgroud p-4 w-full overflow-x-auto">
       <Button
-        onClick={handleRestore}
-        className=" px-4 py-2 rounded-lg shadow-md  mr-1"
-        
-      >
-        Restore
+        onClick={() => navigate("/home")}          
+        className="font-bold mb-2"      
+      >          
+        ← Back 
       </Button>
-      <Button 
-        onClick={handleDelete}
-        className=" px-4 py-2 rounded-lg shadow-md"
-        variant={"destructive"}>
-        Delete Group
-      </Button>
-    </div>
-    <div className="mt-6">
-      <AddTabDialog group_name={list.group_name} refreshList={refreshListData} />
-    </div>
-  </div>
 
-  <div className="mt-6 ">
-    <h2 className="text-xl font-semibold mb-4">Tabs</h2>
-    {listData && listData.length > 0 ? (
-      <ul className="space-y-4">
-      {listData.map((tab, index) => (
-        <li
-          key={index}
-          className=" bg-card p-4 shadow-md rounded-lg flex items-center space-x-4"
-        >
-          <img src={tab.favicon_url} alt="" className="w-10 h-10 flex-shrink-0" />
-          
-          <span className="flex-1 truncate">{tab.title}</span>
-          
-          <a href={tab.url}
-            target="_blank"
-            rel="noopener noreferrer" 
-            className="flex-1 truncate text-card-foreground">{tab.url} </a>
-          
-          <button
-            className="text-red-500 hover:underline flex-shrink-0"
-            onClick={() => RemoveFromList(tab)}
+      <div className="  p-4 shadow-md rounded-lg relative bg-card">
+        <h1 className="text-2xl font-bold">{list.group_name}</h1>
+        <p className="text-card-forground mt-2">{list.description}</p>
+
+        <div className="absolute top-4 right-4">
+          <Button
+            onClick={handleRestore}
+            className=" px-4 py-2 rounded-lg shadow-md  mr-1"
+            
           >
-            Remove Tab
-          </button>
-        </li>
-      ))}
-    </ul>
-    ) : (
-      <p className="text-gray-500">No tabs yet. Start by adding one!</p>
-    )}
-  </div>
-</div>
+            Restore
+          </Button>
+          <Button 
+            onClick={handleDelete}
+            className=" px-4 py-2 rounded-lg shadow-md"
+            variant={"destructive"}>
+            Delete Group
+          </Button>
+        </div>
+        <div className="mt-6">
+          <AddTabDialog group_name={list.group_name} refreshList={refreshListData} />
+        </div>
+      </div>
+
+      <div className="mt-6 ">
+        <h2 className="text-xl font-semibold mb-4">Tabs</h2>
+        {listData && listData.length > 0 ? (
+          <ul className="space-y-4">
+          {listData.map((tab, index) => (
+            <li
+              key={index}
+              className=" bg-card p-4 shadow-md rounded-lg flex items-center space-x-4"
+            >
+              <img src={tab.favicon_url} alt="" className="w-10 h-10 flex-shrink-0" />
+              
+              <span className="flex-1 truncate">{tab.title}</span>
+              
+              <a href={tab.url}
+                target="_blank"
+                rel="noopener noreferrer" 
+                className="flex-1 truncate text-card-foreground">{tab.url} </a>
+              
+              <button
+                className="text-red-500 hover:underline flex-shrink-0"
+                onClick={() => RemoveFromList(tab)}
+              >
+                Remove Tab
+              </button>
+            </li>
+          ))}
+        </ul>
+        ) : (
+          <p className="text-gray-500">No tabs yet. Start by adding one!</p>
+        )}
+      </div>
+    </div>
 
   );
 };
@@ -135,7 +135,7 @@ interface AddTabDialogProp {
   refreshList: () => Promise<void>;
 }
 
-const getFaviconUrl = async (websiteUrl: string): Promise<string> => {
+export const getFaviconUrl = async (websiteUrl: string): Promise<string> => {
   try {
     const normalizedUrl = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`;
     const googleFaviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(normalizedUrl).hostname}&sz=64`;

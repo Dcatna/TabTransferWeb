@@ -41,3 +41,9 @@ export type GroupResponse = {
     title : string;
     url: string;
 }
+
+export type TabBundle = {
+    url: string;
+    favicon_url: string;
+    
+}

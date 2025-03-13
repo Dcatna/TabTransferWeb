@@ -21,7 +21,7 @@ import {
 import { supabase } from "@/data/supabaseclient";
 import { useUserStore } from "@/data/userstore";
 import { cn } from "@/lib/utils";
-import { ComputerIcon, InfoIcon, ListIcon, LogIn, LogOutIcon, LucideIcon, Moon, Plus, Sun } from "lucide-react";
+import { Box, ComputerIcon, InfoIcon, ListIcon, LogIn, LogOutIcon, LucideIcon, Moon, Plus, Sun } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -83,16 +83,16 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
     >
       {user !== undefined ? 
       <SidebarHeader className="">
-        
-
           <ModeToggle />
-          <SidebarItem name="Signout" icon={LogOutIcon} className="   rounded-lg shadow-md" onClick={handleSignout}/>
+          <SidebarItem name="Signout" icon={LogOutIcon} className="rounded-lg shadow-md" onClick={handleSignout}/>
+          <SidebarItem name="Create Bundle" icon = {Box} className="rounded-lg shadow-md" onClick={() => navigate("create_tab_bundle")} />
         <CreateTabList />
       </SidebarHeader>
       : 
       <SidebarHeader className="">
         <SidebarItem name="Signin" icon={LogIn} className=" bg-backgroud text-foreground  rounded-lg shadow-md" onClick={() => navigate("/signin")}/>
         <ModeToggle />
+        <SidebarItem name="Create Bundle" icon = {Box} className="rounded-lg shadow-md" onClick={() => navigate("create_tab_bundle")} />
       </SidebarHeader>
       }
       <SidebarContent className=" space-y-4">
@@ -118,7 +118,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
 function ModeToggle() {
   const { setTheme, theme } = useTheme();
   return (
-    <div className="z-50">
+    <div className="z-50 rounded-lg ">
     <DropdownMenu>
       <DropdownMenuTrigger className="w-full h-full justify-start">
         <SidebarItem name="Toggle Theme" icon={theme === "system" ? ComputerIcon :  theme === "dark" ? Moon : Sun} />

@@ -12,6 +12,7 @@ import ForgotPassword from './components/ForgotPassword.tsx'
 import ChangePasswordPage from './components/ChangePasswordPage.tsx'
 import ErrorPage from './components/ErrorPage.tsx'
 import { ThemeProvider } from './components/Theme.tsx'
+import TabBundlerCreate from './components/TabBundlerCreate.tsx'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/group/:id", element: <ProtectedRoute><Group /></ProtectedRoute> },
       { path: "/forgotpassword", element: <ForgotPassword /> },
       { path: "/resetpassword", element: <ChangePasswordPage /> },
+      { path: "/create_tab_bundle", element: <TabBundlerCreate /> }
 
     ]
   }
