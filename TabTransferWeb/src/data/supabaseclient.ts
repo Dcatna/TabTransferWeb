@@ -1,6 +1,6 @@
 import { createClient, Session, User} from '@supabase/supabase-js'
-import { Group, GroupResponse, StoredUser, Tabs } from './Types';
-
+import { ExportedBundle, Group, GroupResponse, StoredUser, TabBundle, Tabs } from './Types';
+import { v4 as uuidv4 } from "uuid";
 
 export const supabase = createClient(
     'https://jdimaknvdhxpcbvcctem.supabase.co', 
@@ -149,4 +149,32 @@ export async function DeleteGroupByName(group_name: string, user_id:string) {
     }
 
     return true
+}
+
+export async function CreateTabBundle(urls: TabBundle[]) {
+    const id = uuidv4()
+    const created_at = new Date().toISOString()
+    const res = await supabase.from("TabBundle").insert({"bundle_id":id, "urls":urls, "created_at":created_at})
+    if (res.error) {
+        throw res.error
+    }else {
+        return id
+    }
+    
+}
+
+export async function GetTabBudleByID(id: string): Promise<ExportedBundle | null> {
+    const { data, error } = await supabase
+        .from("TabBundle")
+        .select("*")
+        .eq("bundle_id", id)
+        .limit(1)
+        .single()
+
+    if (error) {
+        console.error("Error fetching bundle:", error)
+        return null
+    }
+
+    return data as ExportedBundle
 }
