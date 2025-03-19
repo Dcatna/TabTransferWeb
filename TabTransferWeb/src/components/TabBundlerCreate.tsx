@@ -24,8 +24,8 @@ const TabBundlerCreate = () => {
   async function handleBundleExport(tabs: TabBundle[]) {
     try {
       const export_id = await CreateTabBundle(tabs)
-      // const copy_url = `https://www.tabtransfer.org/view_bundle/${export_id}`
-      const copy_url = `http://localhost:5173/view_bundle/${export_id}`
+      const copy_url = `https://www.tabtransfer.org/view_bundle/${export_id}`
+      // const copy_url = `http://localhost:5173/view_bundle/${export_id}`
 
       await navigator.clipboard.writeText(copy_url)
   
