@@ -1,5 +1,5 @@
 import { createClient, Session, User} from '@supabase/supabase-js'
-import { Group, GroupResponse, StoredUser, TabBundle, Tabs } from './Types';
+import { ExportedBundle, Group, GroupResponse, StoredUser, TabBundle, Tabs } from './Types';
 import { v4 as uuidv4 } from "uuid";
 
 export const supabase = createClient(
@@ -161,4 +161,20 @@ export async function CreateTabBundle(urls: TabBundle[]) {
         return id
     }
     
+}
+
+export async function GetTabBudleByID(id: string): Promise<ExportedBundle | null> {
+    const { data, error } = await supabase
+        .from("TabBundle")
+        .select("*")
+        .eq("bundle_id", id)
+        .limit(1)
+        .single()
+
+    if (error) {
+        console.error("Error fetching bundle:", error)
+        return null
+    }
+
+    return data as ExportedBundle
 }

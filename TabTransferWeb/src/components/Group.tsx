@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DialogHeader } from "./ui/dialog";
 import type { Group } from "@/data/Types";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 
 const Group = () => {
   const location = useLocation();
@@ -210,7 +209,7 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
             >
               Url
             </label>
-            <Input
+            <input
               type="text"
               id="Url"
               value={url}
@@ -227,7 +226,7 @@ const AddTabDialog = ({ group_name, refreshList }: AddTabDialogProp) => {
             >
               Tab Title
             </label>
-            <Input
+            <input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
