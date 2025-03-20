@@ -52,7 +52,7 @@ const ViewBundle = () => {
                 )}
             </div>
 
-            <div className="mt-6 p-6 bg-white shadow-md rounded-lg">
+            <div className="mt-6 p-6 shadow-md rounded-lg">
                 <h3 className="text-xl font-semibold mb-3">Tabs</h3>
                 {bundle && bundle.urls?.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
