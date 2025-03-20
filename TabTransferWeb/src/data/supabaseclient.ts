@@ -8,7 +8,7 @@ export const supabase = createClient(
 )
 
 export async function GetSignedInUser() {
-    const { data: { session } } = await supabase.auth.getSession(); //check if user is already authenticated
+    const { data: { session } } = await supabase.auth.getSession()
 
     if (session) {
         return true
@@ -177,4 +177,53 @@ export async function GetTabBudleByID(id: string): Promise<ExportedBundle | null
     }
 
     return data as ExportedBundle
+}
+
+
+export async function SaveBundleToGroup(bundleData : ExportedBundle, group_name: string, description: string, user_id: string) {
+    try {
+        const created_at = new Date().toISOString()
+        const { data, error } = await supabase
+            .from("Groups")
+            .insert({ 
+                group_name: group_name, 
+                description: description, 
+                user_id: user_id, 
+                created_at: created_at 
+            })
+
+        if (error) {
+            console.error("Error inserting group:", error)
+            throw error
+        }
+        console.log(data, "SAVE GROUP")
+        const results = await Promise.all(
+            bundleData.urls.map(async (tab) => {
+                const { data: data2, error: error2 } = await supabase
+                    .from("GroupItems")
+                    .insert({
+                        url: tab.url,
+                        title: tab.title,
+                        created_at,
+                        favicon_url: tab.favicon_url,
+                        user_id,
+                        group_name,
+                    })
+
+                if (error2) {
+                    console.error("Error inserting tab:", error2)
+                    throw error2
+                }
+
+                return data2
+            })
+        )
+
+        console.log("Successfully inserted group & tabs:", results)
+        return data
+    } catch (err) {
+        console.error("Unexpected error:", err)
+        throw err
+    }
+    
 }
