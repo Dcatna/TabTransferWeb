@@ -101,16 +101,18 @@ const SaveGroup = ({listData} : SaveProp) => {
     const [groupDescription, setGroupDescription] = useState<string>("")
     const user_id = useUserStore((state) => state.userData?.user.id) //user has to be here since it only gives this option when signed in
     const refreshList = useUserStore((state) => state.refreshUserLists)
+    const [open, setOpen] = useState(false)
 
     async function SaveToGroup(e: React.FormEvent) {
         e.preventDefault()
         await SaveBundleToGroup(listData!, groupName, groupDescription, user_id!)
         refreshList()
+        setOpen(false);
     }
 
     return (
-        <Dialog>
-            <DialogTrigger>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger onClick={() => setOpen(true)}>
                 <Button className="bg-primary shadow-md">Save as Group</Button>
             </DialogTrigger>
 

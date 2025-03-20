@@ -227,3 +227,35 @@ export async function SaveBundleToGroup(bundleData : ExportedBundle, group_name:
     }
     
 }
+
+export async function SaveCardToGroup(tabs: Tabs[], group_name: string, description: string, user_id: string) {
+    try {
+        const created_at = new Date().toISOString()
+        const result = await supabase.from("Groups").insert({group_name: group_name, description: description, user_id: user_id})
+        if(result.error) {
+            throw result.error
+        }
+        const res = await Promise.all(
+            tabs.map(async (tab) => {
+                const {data, error} = await supabase.from("GroupItems")
+                .insert({
+                    url: tab.url,
+                    title: tab.title,
+                    favicon_url: tab.favicon_url,
+                    user_id: tab.user_id,
+                    created_at: created_at,
+                    group_name: group_name
+                })
+
+                if(error) {
+                    throw error
+                }
+
+                return data
+            })
+        )
+        return res
+    } catch (err) {
+        throw err
+    }
+}
